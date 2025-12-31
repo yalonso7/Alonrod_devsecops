@@ -92,7 +92,7 @@ terraform plan -var="project_id=your-project-id"
 terraform apply -var="project_id=your-project-id"
 ```
 
-Note: These Terraform files will and should trigger findings in security scanning tools within CNAPP or CASB like:
+Note: These Terraform files will and should trigger findings in cloud security scanning tools within CNAPP or CASB like:
 - Checkov
 - tfsec
 - Terrascan
@@ -140,5 +140,6 @@ checkov -f gcp-comprehensive.tf
 tfsec .
 terrascan scan -t terraform
 ```
+
 
 
