@@ -1,0 +1,1263 @@
+{
+  "scan_metadata": {
+    "scan_date": "2025-12-30T20:06:45.330745",
+    "scanner_version": "1.0.0",
+    "total_files_scanned": 2,
+    "total_findings": 33
+  },
+  "executive_summary": {
+    "severity_breakdown": {
+      "critical": 12,
+      "high": 10,
+      "medium": 2,
+      "low": 9,
+      "info": 0
+    },
+    "risk_score": 100,
+    "compliance_status": "NON-COMPLIANT - Critical issues must be resolved"
+  },
+  "findings_by_severity": {
+    "critical": [
+      {
+        "rule_id": "AWS-SG-001",
+        "rule_name": "Security Group Unrestricted Ingress",
+        "severity": "critical",
+        "file": "aws_cloudformation.tf",
+        "line": 70,
+        "resource_type": "aws_security_group",
+        "description": "Security group allows unrestricted ingress (0.0.0.0/0)",
+        "recommendation": "Restrict ingress to specific IP ranges. Use least privilege principle for network access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IVS-02",
+          "IAM-09"
+        ],
+        "matched_text": "cidr_blocks = [\"0.0.0.0/0\"]"
+      },
+      {
+        "rule_id": "AWS-SG-001",
+        "rule_name": "Security Group Unrestricted Ingress",
+        "severity": "critical",
+        "file": "aws_cloudformation.tf",
+        "line": 79,
+        "resource_type": "aws_security_group",
+        "description": "Security group allows unrestricted ingress (0.0.0.0/0)",
+        "recommendation": "Restrict ingress to specific IP ranges. Use least privilege principle for network access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IVS-02",
+          "IAM-09"
+        ],
+        "matched_text": "cidr_blocks = [\"0.0.0.0/0\"]"
+      },
+      {
+        "rule_id": "AWS-SG-001",
+        "rule_name": "Security Group Unrestricted Ingress",
+        "severity": "critical",
+        "file": "aws_cloudformation.tf",
+        "line": 86,
+        "resource_type": "aws_security_group",
+        "description": "Security group allows unrestricted ingress (0.0.0.0/0)",
+        "recommendation": "Restrict ingress to specific IP ranges. Use least privilege principle for network access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IVS-02",
+          "IAM-09"
+        ],
+        "matched_text": "cidr_blocks = [\"0.0.0.0/0\"]"
+      },
+      {
+        "rule_id": "AWS-RDS-002",
+        "rule_name": "RDS Publicly Accessible",
+        "severity": "critical",
+        "file": "aws_cloudformation.tf",
+        "line": 165,
+        "resource_type": "aws_db_instance",
+        "description": "RDS instance is publicly accessible",
+        "recommendation": "Set publicly_accessible = false. Use private subnets and VPN/bastion for access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control"
+        ],
+        "csa_ccm_mapping": [
+          "IAM-02",
+          "DSI-02"
+        ],
+        "matched_text": "publicly_accessible     = true"
+      },
+      {
+        "rule_id": "GEN-001",
+        "rule_name": "Hardcoded Secrets",
+        "severity": "critical",
+        "file": "aws_cloudformation.tf",
+        "line": 162,
+        "resource_type": "all",
+        "description": "Hardcoded secrets found in configuration",
+        "recommendation": "Use secrets management services (AWS Secrets Manager, GCP Secret Manager). Reference secrets via variables.",
+        "owasp_mapping": [
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "csa_ccm_mapping": [
+          "IAM-01",
+          "EKM-03",
+          "GRM-01"
+        ],
+        "matched_text": "password                = \"T"
+      },
+      {
+        "rule_id": "GCP-FW-001",
+        "rule_name": "Firewall Rule Allows All",
+        "severity": "critical",
+        "file": "gcp_deployment_test.tf",
+        "line": 87,
+        "resource_type": "google_compute_firewall",
+        "description": "Firewall rule allows traffic from anywhere (0.0.0.0/0)",
+        "recommendation": "Restrict source_ranges to specific IP ranges. Use Identity-Aware Proxy where possible.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IVS-02",
+          "IAM-09"
+        ],
+        "matched_text": "source_ranges = [\"0.0.0.0/0\"]"
+      },
+      {
+        "rule_id": "GCP-FW-001",
+        "rule_name": "Firewall Rule Allows All",
+        "severity": "critical",
+        "file": "gcp_deployment_test.tf",
+        "line": 105,
+        "resource_type": "google_compute_firewall",
+        "description": "Firewall rule allows traffic from anywhere (0.0.0.0/0)",
+        "recommendation": "Restrict source_ranges to specific IP ranges. Use Identity-Aware Proxy where possible.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IVS-02",
+          "IAM-09"
+        ],
+        "matched_text": "source_ranges = [\"0.0.0.0/0\"]"
+      },
+      {
+        "rule_id": "GCP-FW-001",
+        "rule_name": "Firewall Rule Allows All",
+        "severity": "critical",
+        "file": "gcp_deployment_test.tf",
+        "line": 119,
+        "resource_type": "google_compute_firewall",
+        "description": "Firewall rule allows traffic from anywhere (0.0.0.0/0)",
+        "recommendation": "Restrict source_ranges to specific IP ranges. Use Identity-Aware Proxy where possible.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IVS-02",
+          "IAM-09"
+        ],
+        "matched_text": "source_ranges = [\"0.0.0.0/0\"]"
+      },
+      {
+        "rule_id": "GCP-SQL-002",
+        "rule_name": "Cloud SQL Public IP",
+        "severity": "critical",
+        "file": "gcp_deployment_test.tf",
+        "line": 349,
+        "resource_type": "google_sql_database_instance",
+        "description": "Cloud SQL instance has public IP enabled",
+        "recommendation": "Set ipv4_enabled = false. Use Private IP and Cloud SQL Proxy for secure access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control"
+        ],
+        "csa_ccm_mapping": [
+          "IAM-02",
+          "DSI-02"
+        ],
+        "matched_text": "ip_configuration {\n      ipv4_enabled = true"
+      },
+      {
+        "rule_id": "GCP-SQL-002",
+        "rule_name": "Cloud SQL Public IP",
+        "severity": "critical",
+        "file": "gcp_deployment_test.tf",
+        "line": 403,
+        "resource_type": "google_sql_database_instance",
+        "description": "Cloud SQL instance has public IP enabled",
+        "recommendation": "Set ipv4_enabled = false. Use Private IP and Cloud SQL Proxy for secure access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control"
+        ],
+        "csa_ccm_mapping": [
+          "IAM-02",
+          "DSI-02"
+        ],
+        "matched_text": "ip_configuration {\n      ipv4_enabled = true"
+      },
+      {
+        "rule_id": "GEN-001",
+        "rule_name": "Hardcoded Secrets",
+        "severity": "critical",
+        "file": "gcp_deployment_test.tf",
+        "line": 429,
+        "resource_type": "all",
+        "description": "Hardcoded secrets found in configuration",
+        "recommendation": "Use secrets management services (AWS Secrets Manager, GCP Secret Manager). Reference secrets via variables.",
+        "owasp_mapping": [
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "csa_ccm_mapping": [
+          "IAM-01",
+          "EKM-03",
+          "GRM-01"
+        ],
+        "matched_text": "password = \"W"
+      },
+      {
+        "rule_id": "GEN-001",
+        "rule_name": "Hardcoded Secrets",
+        "severity": "critical",
+        "file": "gcp_deployment_test.tf",
+        "line": 437,
+        "resource_type": "all",
+        "description": "Hardcoded secrets found in configuration",
+        "recommendation": "Use secrets management services (AWS Secrets Manager, GCP Secret Manager). Reference secrets via variables.",
+        "owasp_mapping": [
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "csa_ccm_mapping": [
+          "IAM-01",
+          "EKM-03",
+          "GRM-01"
+        ],
+        "matched_text": "password = \"r"
+      }
+    ],
+    "high": [
+      {
+        "rule_id": "AWS-S3-002",
+        "rule_name": "S3 Bucket Encryption Disabled",
+        "severity": "high",
+        "file": "aws_cloudformation.tf",
+        "line": 95,
+        "resource_type": "aws_s3_bucket",
+        "description": "S3 bucket does not have encryption enabled",
+        "recommendation": "Enable server-side encryption using aws_s3_bucket_server_side_encryption_configuration with AES256 or aws:kms.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"aws_s3_bucket\" \"test_bucket\" {\n  bucket = \"test-bucket-${data.aws_caller_identity.current...."
+      },
+      {
+        "rule_id": "AWS-RDS-001",
+        "rule_name": "RDS Instance Not Encrypted",
+        "severity": "high",
+        "file": "aws_cloudformation.tf",
+        "line": 155,
+        "resource_type": "aws_db_instance",
+        "description": "RDS instance does not have encryption enabled",
+        "recommendation": "Enable storage_encrypted = true and specify kms_key_id for encryption at rest.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"aws_db_instance\" \"test_database\" {\n  identifier              = \"test-db\"\n  engine         ..."
+      },
+      {
+        "rule_id": "GCP-GCS-002",
+        "rule_name": "GCS Bucket Encryption Not Configured",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 251,
+        "resource_type": "google_storage_bucket",
+        "description": "GCS bucket does not have customer-managed encryption",
+        "recommendation": "Configure encryption block with default_kms_key_name for CMEK encryption.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"google_storage_bucket\" \"test_storage_bucket\" {\n  name          = \"test-storage-bucket-${va..."
+      },
+      {
+        "rule_id": "GCP-GCS-002",
+        "rule_name": "GCS Bucket Encryption Not Configured",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 290,
+        "resource_type": "google_storage_bucket",
+        "description": "GCS bucket does not have customer-managed encryption",
+        "recommendation": "Configure encryption block with default_kms_key_name for CMEK encryption.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"google_storage_bucket\" \"data_bucket\" {\n  name     = \"data-bucket-${var.project_id}\"\n  loca..."
+      },
+      {
+        "rule_id": "GCP-GCS-002",
+        "rule_name": "GCS Bucket Encryption Not Configured",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 314,
+        "resource_type": "google_storage_bucket",
+        "description": "GCS bucket does not have customer-managed encryption",
+        "recommendation": "Configure encryption block with default_kms_key_name for CMEK encryption.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"google_storage_bucket\" \"sensitive_data_bucket\" {\n  name          = \"sensitive-data-${var.p..."
+      },
+      {
+        "rule_id": "GCP-GCS-002",
+        "rule_name": "GCS Bucket Encryption Not Configured",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 531,
+        "resource_type": "google_storage_bucket",
+        "description": "GCS bucket does not have customer-managed encryption",
+        "recommendation": "Configure encryption block with default_kms_key_name for CMEK encryption.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"google_storage_bucket\" \"function_bucket\" {\n  name          = \"function-bucket-${var.projec..."
+      },
+      {
+        "rule_id": "GCP-GCS-002",
+        "rule_name": "GCS Bucket Encryption Not Configured",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 1276,
+        "resource_type": "google_storage_bucket",
+        "description": "GCS bucket does not have customer-managed encryption",
+        "recommendation": "Configure encryption block with default_kms_key_name for CMEK encryption.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"google_storage_bucket\" \"dataproc_staging\" {\n  name          = \"dataproc-staging-${var.proj..."
+      },
+      {
+        "rule_id": "GCP-GCE-001",
+        "rule_name": "GCE Instance External IP",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 171,
+        "resource_type": "google_compute_instance",
+        "description": "GCE instance has external IP address",
+        "recommendation": "Remove access_config block. Use Cloud NAT or Identity-Aware Proxy for access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IAM-09"
+        ],
+        "matched_text": "access_config {"
+      },
+      {
+        "rule_id": "GCP-GCE-001",
+        "rule_name": "GCE Instance External IP",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 226,
+        "resource_type": "google_compute_instance",
+        "description": "GCE instance has external IP address",
+        "recommendation": "Remove access_config block. Use Cloud NAT or Identity-Aware Proxy for access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IAM-09"
+        ],
+        "matched_text": "access_config {"
+      },
+      {
+        "rule_id": "GCP-SQL-001",
+        "rule_name": "Cloud SQL Not Encrypted",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 332,
+        "resource_type": "google_sql_database_instance",
+        "description": "Cloud SQL instance not using customer-managed encryption key",
+        "recommendation": "Configure encryption_key_name for CMEK. Enable automated backups with encryption.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"google_sql_database_instance\" \"test_sql_instance\" {\n  name             = \"test-sql-instanc..."
+      }
+    ],
+    "medium": [
+      {
+        "rule_id": "AWS-LOG-001",
+        "rule_name": "CloudWatch Logs Not Configured",
+        "severity": "medium",
+        "file": "aws_cloudformation.tf",
+        "line": 227,
+        "resource_type": "aws_instance",
+        "description": "Instance does not have CloudWatch logging configured",
+        "recommendation": "Configure CloudWatch Logs for monitoring and auditing. Enable detailed monitoring.",
+        "owasp_mapping": [
+          "A09:2021-Security Logging and Monitoring Failures"
+        ],
+        "csa_ccm_mapping": [
+          "LOG-01",
+          "LOG-02",
+          "SEF-01"
+        ],
+        "matched_text": "resource \"aws_instance\" \"test_instance\" {\n  ami                    = data.aws_ami.ubuntu.id\n  instan..."
+      },
+      {
+        "rule_id": "GCP-LOG-001",
+        "rule_name": "GCE No Logging Configured",
+        "severity": "medium",
+        "file": "gcp_deployment_test.tf",
+        "line": 140,
+        "resource_type": "google_compute_instance",
+        "description": "GCE instance does not have logging configured",
+        "recommendation": "Enable Cloud Logging and Cloud Monitoring. Configure log sinks for security events.",
+        "owasp_mapping": [
+          "A09:2021-Security Logging and Monitoring Failures"
+        ],
+        "csa_ccm_mapping": [
+          "LOG-01",
+          "LOG-02",
+          "SEF-01"
+        ],
+        "matched_text": "resource \"google_compute_instance\" \"test_vm_instance\" {\n  name         = \"test-vm-instance\"\n  machin..."
+      }
+    ],
+    "low": [
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "aws_cloudformation.tf",
+        "line": 59,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"aws_security_group\" \"insecure_sg\" {\n  name        = \"insecure-security-group\"\n  descriptio..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "aws_cloudformation.tf",
+        "line": 95,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"aws_s3_bucket\" \"test_bucket\" {\n  bucket = \"test-bucket-${data.aws_caller_identity.current...."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "aws_cloudformation.tf",
+        "line": 104,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"aws_s3_bucket_public_access_block\" \"test_bucket_pab\" {\n  bucket = aws_s3_bucket.test_bucke..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "aws_cloudformation.tf",
+        "line": 227,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"aws_instance\" \"test_instance\" {\n  ami                    = data.aws_ami.ubuntu.id\n  instan..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "aws_cloudformation.tf",
+        "line": 266,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"aws_kms_key\" \"test_key\" {\n  description             = \"Test KMS key\"\n  deletion_window_in_..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "gcp_deployment_test.tf",
+        "line": 45,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"google_compute_network\" \"test_network\" {\n  name                    = \"test-network\"\n  auto..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "gcp_deployment_test.tf",
+        "line": 210,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"google_compute_instance\" \"windows_instance\" {\n  name         = \"windows-test-instance\"\n  m..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "gcp_deployment_test.tf",
+        "line": 251,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"google_storage_bucket\" \"test_storage_bucket\" {\n  name          = \"test-storage-bucket-${va..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "gcp_deployment_test.tf",
+        "line": 900,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"google_dns_managed_zone\" \"test_zone\" {\n  name        = \"test-zone\"\n  dns_name    = \"test.e..."
+      }
+    ],
+    "info": []
+  },
+  "compliance_mapping": {
+    "owasp_top_10": {
+      "coverage": {
+        "A02:2021-Cryptographic Failures": 8,
+        "A01:2021-Broken Access Control": 11,
+        "A05:2021-Security Misconfiguration": 17,
+        "A09:2021-Security Logging and Monitoring Failures": 2,
+        "A07:2021-Identification and Authentication Failures": 3
+      },
+      "total_categories": 5
+    },
+    "csa_ccm": {
+      "coverage": {
+        "EKM-01": 8,
+        "EKM-02": 8,
+        "DSI-01": 8,
+        "IVS-01": 8,
+        "IVS-02": 6,
+        "IAM-09": 8,
+        "IAM-02": 3,
+        "DSI-02": 3,
+        "LOG-01": 2,
+        "LOG-02": 2,
+        "SEF-01": 2,
+        "IAM-01": 3,
+        "EKM-03": 3,
+        "GRM-01": 3,
+        "GRM-06": 9,
+        "GRM-08": 9
+      },
+      "total_controls": 16
+    }
+  },
+  "recommendations": [
+    {
+      "priority": 1,
+      "rule_id": "AWS-SG-001",
+      "rule_name": "Security Group Unrestricted Ingress",
+      "occurrences": 3,
+      "severity": "critical",
+      "action": "Restrict ingress to specific IP ranges. Use least privilege principle for network access."
+    },
+    {
+      "priority": 2,
+      "rule_id": "GEN-001",
+      "rule_name": "Hardcoded Secrets",
+      "occurrences": 3,
+      "severity": "critical",
+      "action": "Use secrets management services (AWS Secrets Manager, GCP Secret Manager). Reference secrets via variables."
+    },
+    {
+      "priority": 3,
+      "rule_id": "GCP-FW-001",
+      "rule_name": "Firewall Rule Allows All",
+      "occurrences": 3,
+      "severity": "critical",
+      "action": "Restrict source_ranges to specific IP ranges. Use Identity-Aware Proxy where possible."
+    },
+    {
+      "priority": 4,
+      "rule_id": "GCP-SQL-002",
+      "rule_name": "Cloud SQL Public IP",
+      "occurrences": 2,
+      "severity": "critical",
+      "action": "Set ipv4_enabled = false. Use Private IP and Cloud SQL Proxy for secure access."
+    },
+    {
+      "priority": 5,
+      "rule_id": "AWS-RDS-002",
+      "rule_name": "RDS Publicly Accessible",
+      "occurrences": 1,
+      "severity": "critical",
+      "action": "Set publicly_accessible = false. Use private subnets and VPN/bastion for access."
+    },
+    {
+      "priority": 6,
+      "rule_id": "GCP-GCS-002",
+      "rule_name": "GCS Bucket Encryption Not Configured",
+      "occurrences": 5,
+      "severity": "high",
+      "action": "Configure encryption block with default_kms_key_name for CMEK encryption."
+    },
+    {
+      "priority": 7,
+      "rule_id": "GCP-GCE-001",
+      "rule_name": "GCE Instance External IP",
+      "occurrences": 2,
+      "severity": "high",
+      "action": "Remove access_config block. Use Cloud NAT or Identity-Aware Proxy for access."
+    },
+    {
+      "priority": 8,
+      "rule_id": "AWS-S3-002",
+      "rule_name": "S3 Bucket Encryption Disabled",
+      "occurrences": 1,
+      "severity": "high",
+      "action": "Enable server-side encryption using aws_s3_bucket_server_side_encryption_configuration with AES256 or aws:kms."
+    },
+    {
+      "priority": 9,
+      "rule_id": "AWS-RDS-001",
+      "rule_name": "RDS Instance Not Encrypted",
+      "occurrences": 1,
+      "severity": "high",
+      "action": "Enable storage_encrypted = true and specify kms_key_id for encryption at rest."
+    },
+    {
+      "priority": 10,
+      "rule_id": "GCP-SQL-001",
+      "rule_name": "Cloud SQL Not Encrypted",
+      "occurrences": 1,
+      "severity": "high",
+      "action": "Configure encryption_key_name for CMEK. Enable automated backups with encryption."
+    }
+  ],
+  "remediation_priority": {
+    "immediate_action_required": [
+      {
+        "rule_id": "AWS-SG-001",
+        "rule_name": "Security Group Unrestricted Ingress",
+        "severity": "critical",
+        "file": "aws_cloudformation.tf",
+        "line": 70,
+        "resource_type": "aws_security_group",
+        "description": "Security group allows unrestricted ingress (0.0.0.0/0)",
+        "recommendation": "Restrict ingress to specific IP ranges. Use least privilege principle for network access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IVS-02",
+          "IAM-09"
+        ],
+        "matched_text": "cidr_blocks = [\"0.0.0.0/0\"]"
+      },
+      {
+        "rule_id": "AWS-SG-001",
+        "rule_name": "Security Group Unrestricted Ingress",
+        "severity": "critical",
+        "file": "aws_cloudformation.tf",
+        "line": 79,
+        "resource_type": "aws_security_group",
+        "description": "Security group allows unrestricted ingress (0.0.0.0/0)",
+        "recommendation": "Restrict ingress to specific IP ranges. Use least privilege principle for network access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IVS-02",
+          "IAM-09"
+        ],
+        "matched_text": "cidr_blocks = [\"0.0.0.0/0\"]"
+      },
+      {
+        "rule_id": "AWS-SG-001",
+        "rule_name": "Security Group Unrestricted Ingress",
+        "severity": "critical",
+        "file": "aws_cloudformation.tf",
+        "line": 86,
+        "resource_type": "aws_security_group",
+        "description": "Security group allows unrestricted ingress (0.0.0.0/0)",
+        "recommendation": "Restrict ingress to specific IP ranges. Use least privilege principle for network access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IVS-02",
+          "IAM-09"
+        ],
+        "matched_text": "cidr_blocks = [\"0.0.0.0/0\"]"
+      },
+      {
+        "rule_id": "AWS-RDS-002",
+        "rule_name": "RDS Publicly Accessible",
+        "severity": "critical",
+        "file": "aws_cloudformation.tf",
+        "line": 165,
+        "resource_type": "aws_db_instance",
+        "description": "RDS instance is publicly accessible",
+        "recommendation": "Set publicly_accessible = false. Use private subnets and VPN/bastion for access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control"
+        ],
+        "csa_ccm_mapping": [
+          "IAM-02",
+          "DSI-02"
+        ],
+        "matched_text": "publicly_accessible     = true"
+      },
+      {
+        "rule_id": "GEN-001",
+        "rule_name": "Hardcoded Secrets",
+        "severity": "critical",
+        "file": "aws_cloudformation.tf",
+        "line": 162,
+        "resource_type": "all",
+        "description": "Hardcoded secrets found in configuration",
+        "recommendation": "Use secrets management services (AWS Secrets Manager, GCP Secret Manager). Reference secrets via variables.",
+        "owasp_mapping": [
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "csa_ccm_mapping": [
+          "IAM-01",
+          "EKM-03",
+          "GRM-01"
+        ],
+        "matched_text": "password                = \"T"
+      }
+    ],
+    "short_term_30_days": [
+      {
+        "rule_id": "AWS-S3-002",
+        "rule_name": "S3 Bucket Encryption Disabled",
+        "severity": "high",
+        "file": "aws_cloudformation.tf",
+        "line": 95,
+        "resource_type": "aws_s3_bucket",
+        "description": "S3 bucket does not have encryption enabled",
+        "recommendation": "Enable server-side encryption using aws_s3_bucket_server_side_encryption_configuration with AES256 or aws:kms.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"aws_s3_bucket\" \"test_bucket\" {\n  bucket = \"test-bucket-${data.aws_caller_identity.current...."
+      },
+      {
+        "rule_id": "AWS-RDS-001",
+        "rule_name": "RDS Instance Not Encrypted",
+        "severity": "high",
+        "file": "aws_cloudformation.tf",
+        "line": 155,
+        "resource_type": "aws_db_instance",
+        "description": "RDS instance does not have encryption enabled",
+        "recommendation": "Enable storage_encrypted = true and specify kms_key_id for encryption at rest.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"aws_db_instance\" \"test_database\" {\n  identifier              = \"test-db\"\n  engine         ..."
+      },
+      {
+        "rule_id": "GCP-GCS-002",
+        "rule_name": "GCS Bucket Encryption Not Configured",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 251,
+        "resource_type": "google_storage_bucket",
+        "description": "GCS bucket does not have customer-managed encryption",
+        "recommendation": "Configure encryption block with default_kms_key_name for CMEK encryption.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"google_storage_bucket\" \"test_storage_bucket\" {\n  name          = \"test-storage-bucket-${va..."
+      },
+      {
+        "rule_id": "GCP-GCS-002",
+        "rule_name": "GCS Bucket Encryption Not Configured",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 290,
+        "resource_type": "google_storage_bucket",
+        "description": "GCS bucket does not have customer-managed encryption",
+        "recommendation": "Configure encryption block with default_kms_key_name for CMEK encryption.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"google_storage_bucket\" \"data_bucket\" {\n  name     = \"data-bucket-${var.project_id}\"\n  loca..."
+      },
+      {
+        "rule_id": "GCP-GCS-002",
+        "rule_name": "GCS Bucket Encryption Not Configured",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 314,
+        "resource_type": "google_storage_bucket",
+        "description": "GCS bucket does not have customer-managed encryption",
+        "recommendation": "Configure encryption block with default_kms_key_name for CMEK encryption.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"google_storage_bucket\" \"sensitive_data_bucket\" {\n  name          = \"sensitive-data-${var.p..."
+      },
+      {
+        "rule_id": "GCP-GCS-002",
+        "rule_name": "GCS Bucket Encryption Not Configured",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 531,
+        "resource_type": "google_storage_bucket",
+        "description": "GCS bucket does not have customer-managed encryption",
+        "recommendation": "Configure encryption block with default_kms_key_name for CMEK encryption.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"google_storage_bucket\" \"function_bucket\" {\n  name          = \"function-bucket-${var.projec..."
+      },
+      {
+        "rule_id": "GCP-GCS-002",
+        "rule_name": "GCS Bucket Encryption Not Configured",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 1276,
+        "resource_type": "google_storage_bucket",
+        "description": "GCS bucket does not have customer-managed encryption",
+        "recommendation": "Configure encryption block with default_kms_key_name for CMEK encryption.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"google_storage_bucket\" \"dataproc_staging\" {\n  name          = \"dataproc-staging-${var.proj..."
+      },
+      {
+        "rule_id": "GCP-GCE-001",
+        "rule_name": "GCE Instance External IP",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 171,
+        "resource_type": "google_compute_instance",
+        "description": "GCE instance has external IP address",
+        "recommendation": "Remove access_config block. Use Cloud NAT or Identity-Aware Proxy for access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IAM-09"
+        ],
+        "matched_text": "access_config {"
+      },
+      {
+        "rule_id": "GCP-GCE-001",
+        "rule_name": "GCE Instance External IP",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 226,
+        "resource_type": "google_compute_instance",
+        "description": "GCE instance has external IP address",
+        "recommendation": "Remove access_config block. Use Cloud NAT or Identity-Aware Proxy for access.",
+        "owasp_mapping": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "IVS-01",
+          "IAM-09"
+        ],
+        "matched_text": "access_config {"
+      },
+      {
+        "rule_id": "GCP-SQL-001",
+        "rule_name": "Cloud SQL Not Encrypted",
+        "severity": "high",
+        "file": "gcp_deployment_test.tf",
+        "line": 332,
+        "resource_type": "google_sql_database_instance",
+        "description": "Cloud SQL instance not using customer-managed encryption key",
+        "recommendation": "Configure encryption_key_name for CMEK. Enable automated backups with encryption.",
+        "owasp_mapping": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "csa_ccm_mapping": [
+          "EKM-01",
+          "EKM-02",
+          "DSI-01"
+        ],
+        "matched_text": "resource \"google_sql_database_instance\" \"test_sql_instance\" {\n  name             = \"test-sql-instanc..."
+      }
+    ],
+    "medium_term_90_days": [
+      {
+        "rule_id": "AWS-LOG-001",
+        "rule_name": "CloudWatch Logs Not Configured",
+        "severity": "medium",
+        "file": "aws_cloudformation.tf",
+        "line": 227,
+        "resource_type": "aws_instance",
+        "description": "Instance does not have CloudWatch logging configured",
+        "recommendation": "Configure CloudWatch Logs for monitoring and auditing. Enable detailed monitoring.",
+        "owasp_mapping": [
+          "A09:2021-Security Logging and Monitoring Failures"
+        ],
+        "csa_ccm_mapping": [
+          "LOG-01",
+          "LOG-02",
+          "SEF-01"
+        ],
+        "matched_text": "resource \"aws_instance\" \"test_instance\" {\n  ami                    = data.aws_ami.ubuntu.id\n  instan..."
+      },
+      {
+        "rule_id": "GCP-LOG-001",
+        "rule_name": "GCE No Logging Configured",
+        "severity": "medium",
+        "file": "gcp_deployment_test.tf",
+        "line": 140,
+        "resource_type": "google_compute_instance",
+        "description": "GCE instance does not have logging configured",
+        "recommendation": "Enable Cloud Logging and Cloud Monitoring. Configure log sinks for security events.",
+        "owasp_mapping": [
+          "A09:2021-Security Logging and Monitoring Failures"
+        ],
+        "csa_ccm_mapping": [
+          "LOG-01",
+          "LOG-02",
+          "SEF-01"
+        ],
+        "matched_text": "resource \"google_compute_instance\" \"test_vm_instance\" {\n  name         = \"test-vm-instance\"\n  machin..."
+      }
+    ],
+    "long_term_planning": [
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "aws_cloudformation.tf",
+        "line": 59,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"aws_security_group\" \"insecure_sg\" {\n  name        = \"insecure-security-group\"\n  descriptio..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "aws_cloudformation.tf",
+        "line": 95,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"aws_s3_bucket\" \"test_bucket\" {\n  bucket = \"test-bucket-${data.aws_caller_identity.current...."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "aws_cloudformation.tf",
+        "line": 104,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"aws_s3_bucket_public_access_block\" \"test_bucket_pab\" {\n  bucket = aws_s3_bucket.test_bucke..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "aws_cloudformation.tf",
+        "line": 227,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"aws_instance\" \"test_instance\" {\n  ami                    = data.aws_ami.ubuntu.id\n  instan..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "aws_cloudformation.tf",
+        "line": 266,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"aws_kms_key\" \"test_key\" {\n  description             = \"Test KMS key\"\n  deletion_window_in_..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "gcp_deployment_test.tf",
+        "line": 45,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"google_compute_network\" \"test_network\" {\n  name                    = \"test-network\"\n  auto..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "gcp_deployment_test.tf",
+        "line": 210,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"google_compute_instance\" \"windows_instance\" {\n  name         = \"windows-test-instance\"\n  m..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "gcp_deployment_test.tf",
+        "line": 251,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"google_storage_bucket\" \"test_storage_bucket\" {\n  name          = \"test-storage-bucket-${va..."
+      },
+      {
+        "rule_id": "GEN-002",
+        "rule_name": "Missing Resource Tags",
+        "severity": "low",
+        "file": "gcp_deployment_test.tf",
+        "line": 900,
+        "resource_type": "all",
+        "description": "Resource missing required tags/labels for governance",
+        "recommendation": "Add tags/labels for Environment, Owner, CostCenter, and DataClassification for proper governance.",
+        "owasp_mapping": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "csa_ccm_mapping": [
+          "GRM-06",
+          "GRM-08"
+        ],
+        "matched_text": "resource \"google_dns_managed_zone\" \"test_zone\" {\n  name        = \"test-zone\"\n  dns_name    = \"test.e..."
+      }
+    ]
+  }
+}
