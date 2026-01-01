@@ -1,0 +1,34 @@
+{
+  "scan_metadata": {
+    "timestamp": "2026-01-01T11:25:56.854993",
+    "total_findings": 0,
+    "critical": 0,
+    "high": 0,
+    "medium": 0,
+    "low": 0
+  },
+  "risk_analysis": {
+    "average_exploit_likelihood": NaN,
+    "average_risk_score": NaN,
+    "high_risk_findings": 0,
+    "critical_public_exposures": 0
+  },
+  "compliance_summary": {
+    "SOC2": 0,
+    "PCI-DSS": 0,
+    "HIPAA": 0,
+    "GDPR": 0,
+    "ISO27001": 0
+  },
+  "owasp_mapping": {
+    "A01": 0,
+    "A02": 0,
+    "A03": 0,
+    "A05": 0,
+    "A07": 0,
+    "A09": 0
+  },
+  "findings": [],
+  "visualizations": {},
+  "recommendations": []
+}
