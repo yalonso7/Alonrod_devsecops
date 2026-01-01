@@ -1,0 +1,159 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Test AWS configuration with intentional security issues for scanning'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: test
+    AllowedValues:
+      - dev
+      - test
+      - prod
+
+Resources:
+  # VPC Configuration
+  TestVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: !Sub '${Environment}-vpc'
+
+  # Public Subnet (potential issue: overly permissive)
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref TestVPC
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: true
+      AvailabilityZone: !Select [0, !GetAZs '']
+      Tags:
+        - Key: Name
+          Value: public-subnet
+
+  # Security Group with issues
+  InsecureSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Test security group with issues
+      VpcId: !Ref TestVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0  # Issue: SSH open to world
+        - IpProtocol: tcp
+          FromPort: 3389
+          ToPort: 3389
+          CidrIp: 0.0.0.0/0  # Issue: RDP open to world
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+  # S3 Bucket with issues
+  TestBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'test-bucket-${AWS::AccountId}'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false  # Issue: Public access allowed
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      VersioningConfiguration:
+        Status: Suspended  # Issue: Versioning disabled
+      # Issue: No encryption configured
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  # IAM Role with overly permissive policy
+  OverlyPermissiveRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: test-admin-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AdministratorAccess'  # Issue: Full admin access
+
+  # RDS Instance without encryption
+  TestDatabase:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: test-db
+      Engine: mysql
+      EngineVersion: '8.0'
+      DBInstanceClass: db.t3.micro
+      AllocatedStorage: 20
+      MasterUsername: admin
+      MasterUserPassword: TestPassword123!  # Issue: Hardcoded password
+      PubliclyAccessible: true  # Issue: Database publicly accessible
+      StorageEncrypted: false  # Issue: Storage not encrypted
+      BackupRetentionPeriod: 0  # Issue: No backups
+      VPCSecurityGroups:
+        - !Ref InsecureSecurityGroup
+
+  # Lambda Function without proper configuration
+  TestLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: test-function
+      Runtime: python3.9
+      Handler: index.handler
+      Role: !GetAtt OverlyPermissiveRole.Arn
+      Code:
+        ZipFile: |
+          def handler(event, context):
+              return {'statusCode': 200}
+      Environment:
+        Variables:
+          API_KEY: hardcoded-api-key-12345  # Issue: Hardcoded secret
+          DATABASE_URL: mysql://admin:password@localhost/db  # Issue: Hardcoded credentials
+      # Issue: No VPC configuration
+      # Issue: No reserved concurrency set
+
+  # CloudWatch Log Group without retention
+  TestLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/test-function
+      # Issue: No retention policy set
+
+  # EBS Volume without encryption
+  TestVolume:
+    Type: AWS::EC2::Volume
+    Properties:
+      AvailabilityZone: !Select [0, !GetAZs '']
+      Size: 10
+      Encrypted: false  # Issue: Volume not encrypted
+      Tags:
+        - Key: Name
+          Value: test-volume
+
+Outputs:
+  VPCId:
+    Description: VPC ID
+    Value: !Ref TestVPC
+    Export:
+      Name: !Sub '${AWS::StackName}-VPC'
+  
+  BucketName:
+    Description: S3 Bucket Name
+    Value: !Ref TestBucket
+  
+  SecurityGroupId:
+    Description: Security Group ID
+    Value: !Ref InsecureSecurityGroup
