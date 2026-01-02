@@ -1,6 +1,6 @@
 # Alonrod_devsecops
 
-# Terraform IaC Policy as a code scanner.
+# Terraform IaC policy as a code scanner & GRC.
 
 <img width="785" height="600" alt="image" src="https://github.com/user-attachments/assets/18120adf-870a-413f-805e-71484fd2afcb" />
 
