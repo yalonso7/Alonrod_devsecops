@@ -96,3 +96,10 @@ Manual compliance mapping is tedious and prone to error. By analyzing policy met
 
 # Why HTML Visualizations?
 JSON and CSV files are hard for leadership to consume. The HTML report bridges the gap between DevSecOps technical data and CISO-level strategic views, making it easier to demonstrate value and prove compliance coverage during the migration project.
+
+#DevSecOps Notes
+
+Key Management Best Practices
+-Rotate Keys Periodically: Set an expiration date or use automated tools (like AWS Secrets Manager or Azure Key Vault) to rotate keys regularly.
+-Limit Permissions: Create keys for specific roles or service accounts with the least privilege necessary rather than using a full System Admin account.
+-Inactive Status: If a key is compromised, immediately change its status to Inactive in the Prisma Cloud console to block access. 
