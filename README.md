@@ -20,5 +20,13 @@ Prisma2Cortex: Prisma cloud migration tool.
 
 <img width="551" height="473" alt="image" src="https://github.com/user-attachments/assets/b808c7e3-ac75-4c79-8edb-a35f8d2010ed" />
 
+Migration & Compliance Report.
+
+<img width="725" height="545" alt="image" src="https://github.com/user-attachments/assets/c2a5f713-c138-408a-836a-df480d7370cc" />
+
+<img width="717" height="408" alt="image" src="https://github.com/user-attachments/assets/4fa43f46-618b-4da5-ba21-9aa8089819a9" />
+
+
+
 
 
