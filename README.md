@@ -16,3 +16,9 @@ Dashboards and reporting.
 <img width="902" height="448" alt="image" src="https://github.com/user-attachments/assets/b6b0baca-4bef-47c7-b5cc-d1e8c70cdf84" />
 
 
+Prisma2Cortex: Prisma cloud migration tool.
+
+<img width="551" height="473" alt="image" src="https://github.com/user-attachments/assets/b808c7e3-ac75-4c79-8edb-a35f8d2010ed" />
+
+
+
