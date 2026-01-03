@@ -100,6 +100,9 @@ JSON and CSV files are hard for leadership to consume. The HTML report bridges t
 #DevSecOps Notes
 
 Key Management Best Practices
+
 -Rotate Keys Periodically: Set an expiration date or use automated tools (like AWS Secrets Manager or Azure Key Vault) to rotate keys regularly.
+
 -Limit Permissions: Create keys for specific roles or service accounts with the least privilege necessary rather than using a full System Admin account.
+
 -Inactive Status: If a key is compromised, immediately change its status to Inactive in the Prisma Cloud console to block access. 
