@@ -1,0 +1,63 @@
+# config/framework_definitions.yaml
+frameworks:
+  OWASP_TOP_10_2021:
+    name: "OWASP Top 10 2021"
+    controls:
+      A01:2021:
+        id: "A01:2021"
+        name: "Broken Access Control"
+        description: "Restrictions on what authenticated users are allowed to do are often not properly enforced."
+        keywords: ["unauthorized access", "privilege escalation", "idor", "access control"]
+      A02:2021:
+        id: "A02:2021"
+        name: "Cryptographic Failures"
+        description: "Failures related to cryptography which often lead to sensitive data exposure."
+        keywords: ["encryption", "tls", "crypto", "sensitive data", "pii"]
+      # ... other OWASP controls
+  
+  HIPAA:
+    name: "HIPAA Security Rule"
+    controls:
+      164.308:
+        id: "164.308"
+        name: "Administrative Safeguards"
+        description: "Administrative actions, policies, and procedures to manage security measures."
+        keywords: ["risk analysis", "security management", "workforce security", "training"]
+      # ... other HIPAA controls
+  
+  # ... other frameworks
+
+# config/ml_config.yaml
+ml_model:
+  name: "vulnerability_risk_predictor"
+  features:
+    - name: "severity"
+      type: "numerical"
+      weight: 0.15
+    - name: "has_cve"
+      type: "binary"
+      weight: 0.20
+    - name: "data_sensitivity"
+      type: "numerical"
+      weight: 0.25
+    - name: "incident_age"
+      type: "numerical"
+      weight: 0.10
+    - name: "temporal_features"
+      type: "categorical"
+      weight: 0.10
+    - name: "detail_complexity"
+      type: "numerical"
+      weight: 0.20
+  
+  thresholds:
+    critical_risk: 0.8
+    high_risk: 0.6
+    medium_risk: 0.4
+    low_risk: 0.2
+  
+  training:
+    test_size: 0.2
+    random_state: 42
+    n_estimators: 100
+    max_depth: 10
