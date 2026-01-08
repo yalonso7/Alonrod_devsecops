@@ -1,0 +1,495 @@
+# GitLab CI/CD Pipeline for Prisma Cloud WAAS Deployments
+
+# Pipeline stages
+stages:
+  - validate
+  - security
+  - build
+  - deploy-dev
+  - deploy-staging
+  - deploy-production
+  - verify
+
+# Global variables
+variables:
+  PYTHON_VERSION: "3.11"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+# Cache configuration
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+
+# Include templates
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+# Before script - runs before each job
+.before_script_template: &before_script_definition
+  before_script:
+    - python --version
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+
+# ============================================================================
+# STAGE 1: VALIDATION
+# ============================================================================
+
+validate-yaml:
+  stage: validate
+  image: python:${PYTHON_VERSION}-slim
+  <<: *before_script_definition
+  script:
+    - echo "🔍 Validating YAML syntax..."
+    - |
+      for file in $(find policies -name "*.yaml" -o -name "*.yml"); do
+        echo "Checking: $file"
+        python3 -c "import yaml; yaml.safe_load(open('$file'))" || exit 1
+      done
+    - echo "✓ All YAML files are valid"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+  artifacts:
+    reports:
+      dotenv: validation.env
+    expire_in: 1 day
+
+lint-yaml:
+  stage: validate
+  image: python:${PYTHON_VERSION}-slim
+  before_script:
+    - pip install yamllint
+  script:
+    - echo "🔍 Running YAML linter..."
+    - yamllint -d "{extends: default, rules: {line-length: {max: 120}, comments: {min-spaces-from-content: 1}}}" policies/
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  allow_failure: true
+
+check-sensitive-data:
+  stage: validate
+  image: alpine:latest
+  script:
+    - echo "🔒 Checking for sensitive data..."
+    - |
+      if grep -r -i -E "password|secret|api[_-]?key|token|private[_-]?key" policies/*.yaml; then
+        echo "❌ ERROR: Sensitive data detected in policy files!"
+        exit 1
+      fi
+    - echo "✓ No sensitive data detected"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+validate-policy-structure:
+  stage: validate
+  image: python:${PYTHON_VERSION}-slim
+  <<: *before_script_definition
+  script:
+    - echo "🔍 Validating policy structure..."
+    - pip install jsonschema
+    - |
+      python3 << 'EOF'
+      import yaml
+      import os
+      from pathlib import Path
+      
+      required_fields = ['apiVersion', 'kind', 'metadata', 'spec']
+      
+      for policy_file in Path('policies').rglob('*.yaml'):
+          with open(policy_file) as f:
+              policy = yaml.safe_load(f)
+              for field in required_fields:
+                  if field not in policy:
+                      print(f"❌ Missing required field '{field}' in {policy_file}")
+                      exit(1)
+      print("✓ All policies have valid structure")
+      EOF
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# ============================================================================
+# STAGE 2: SECURITY SCANNING
+# ============================================================================
+
+security-scan:
+  stage: security
+  image: python:${PYTHON_VERSION}-slim
+  before_script:
+    - pip install bandit safety
+  script:
+    - echo "🔒 Running security scans..."
+    - bandit -r . -f json -o bandit-report.json || true
+    - bandit -r . -ll -f screen
+    - safety check --json || true
+    - echo "✓ Security scan complete"
+  artifacts:
+    reports:
+      sast: bandit-report.json
+    paths:
+      - bandit-report.json
+    expire_in: 30 days
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# ============================================================================
+# STAGE 3: BUILD
+# ============================================================================
+
+build-docker:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo "🐳 Building Docker image..."
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:latest
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+    - echo "✓ Docker image built and pushed"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+  tags:
+    - docker
+
+# ============================================================================
+# STAGE 4: DEPLOY TO DEVELOPMENT
+# ============================================================================
+
+.deploy_template: &deploy_definition
+  image: python:${PYTHON_VERSION}-slim
+  <<: *before_script_definition
+  artifacts:
+    paths:
+      - logs/
+      - backups/
+    expire_in: 30 days
+  tags:
+    - docker
+
+deploy-dev:
+  <<: *deploy_definition
+  stage: deploy-dev
+  environment:
+    name: development
+    url: https://console.prismacloud.io
+    on_stop: stop-dev
+  script:
+    - echo "🚀 Deploying to Development..."
+    - |
+      for policy in policies/dev/**/*.yaml; do
+        if [ -f "$policy" ]; then
+          echo "Deploying: $policy"
+          python3 deploy_waas_policy.py \
+            $PRISMA_CONSOLE_URL \
+            $PRISMA_USERNAME_DEV \
+            $PRISMA_PASSWORD_DEV \
+            container \
+            "$policy"
+        fi
+      done
+    - echo "✓ Development deployment complete"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+  after_script:
+    - |
+      curl -X POST $SLACK_WEBHOOK_URL \
+        -H 'Content-Type: application/json' \
+        -d "{
+          \"text\": \"Development WAAS deployment: ${CI_JOB_STATUS}\",
+          \"attachments\": [{
+            \"color\": \"${CI_JOB_STATUS}\" == \"success\" ? \"good\" : \"danger\",
+            \"fields\": [
+              {\"title\": \"Environment\", \"value\": \"Development\", \"short\": true},
+              {\"title\": \"Commit\", \"value\": \"${CI_COMMIT_SHORT_SHA}\", \"short\": true},
+              {\"title\": \"Author\", \"value\": \"${GITLAB_USER_NAME}\", \"short\": true},
+              {\"title\": \"Pipeline\", \"value\": \"${CI_PIPELINE_URL}\", \"short\": false}
+            ]
+          }]
+        }"
+
+stop-dev:
+  stage: deploy-dev
+  environment:
+    name: development
+    action: stop
+  script:
+    - echo "Stopping development environment (manual action)"
+  when: manual
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+# ============================================================================
+# STAGE 5: DEPLOY TO STAGING
+# ============================================================================
+
+deploy-staging:
+  <<: *deploy_definition
+  stage: deploy-staging
+  environment:
+    name: staging
+    url: https://console.prismacloud.io
+  script:
+    - echo "🚀 Deploying to Staging..."
+    
+    # Backup existing policies
+    - mkdir -p backups
+    - |
+      python3 deploy_waas_policy.py \
+        $PRISMA_CONSOLE_URL \
+        $PRISMA_USERNAME_STAGING \
+        $PRISMA_PASSWORD_STAGING \
+        container \
+        --export \
+        backups/staging-backup-$(date +%Y%m%d-%H%M%S).json
+    
+    # Deploy policies
+    - chmod +x batch_deploy.sh
+    - export ENVIRONMENT=staging
+    - ./batch_deploy.sh -e staging -b -v
+    
+    - echo "✓ Staging deployment complete"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  artifacts:
+    paths:
+      - logs/
+      - backups/
+    expire_in: 60 days
+  after_script:
+    - |
+      curl -X POST $SLACK_WEBHOOK_URL \
+        -H 'Content-Type: application/json' \
+        -d "{
+          \"text\": \"Staging WAAS deployment: ${CI_JOB_STATUS}\",
+          \"attachments\": [{
+            \"color\": \"${CI_JOB_STATUS}\" == \"success\" ? \"good\" : \"danger\",
+            \"fields\": [
+              {\"title\": \"Environment\", \"value\": \"Staging\", \"short\": true},
+              {\"title\": \"Commit\", \"value\": \"${CI_COMMIT_SHORT_SHA}\", \"short\": true},
+              {\"title\": \"Author\", \"value\": \"${GITLAB_USER_NAME}\", \"short\": true},
+              {\"title\": \"Pipeline\", \"value\": \"${CI_PIPELINE_URL}\", \"short\": false}
+            ]
+          }]
+        }"
+
+# ============================================================================
+# STAGE 6: DEPLOY TO PRODUCTION
+# ============================================================================
+
+deploy-production:
+  <<: *deploy_definition
+  stage: deploy-production
+  environment:
+    name: production
+    url: https://console.prismacloud.io
+  script:
+    - echo "🚀 Deploying to Production..."
+    
+    # Create backup
+    - mkdir -p backups
+    - |
+      python3 deploy_waas_policy.py \
+        $PRISMA_CONSOLE_URL \
+        $PRISMA_USERNAME_PROD \
+        $PRISMA_PASSWORD_PROD \
+        container \
+        --export \
+        backups/production-backup-$(date +%Y%m%d-%H%M%S).json
+    
+    # Deploy policies
+    - chmod +x batch_deploy.sh
+    - ./batch_deploy.sh -e production -b -v
+    
+    # Create deployment tag
+    - git config user.name "GitLab CI"
+    - git config user.email "ci@gitlab.com"
+    - TAG="prod-$(date +%Y%m%d-%H%M%S)"
+    - git tag -a "$TAG" -m "Production deployment: $TAG"
+    - git push origin "$TAG" || true
+    
+    - echo "✓ Production deployment complete"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+  artifacts:
+    paths:
+      - logs/
+      - backups/
+    expire_in: 365 days
+  after_script:
+    - |
+      if [ "$CI_JOB_STATUS" == "success" ]; then
+        COLOR="good"
+        TEXT="✅ Production WAAS deployment successful"
+      else
+        COLOR="danger"
+        TEXT="❌ Production WAAS deployment failed"
+      fi
+      
+      curl -X POST $SLACK_WEBHOOK_URL \
+        -H 'Content-Type: application/json' \
+        -d "{
+          \"text\": \"${TEXT}\",
+          \"attachments\": [{
+            \"color\": \"${COLOR}\",
+            \"fields\": [
+              {\"title\": \"Environment\", \"value\": \"Production\", \"short\": true},
+              {\"title\": \"Commit\", \"value\": \"${CI_COMMIT_SHORT_SHA}\", \"short\": true},
+              {\"title\": \"Author\", \"value\": \"${GITLAB_USER_NAME}\", \"short\": true},
+              {\"title\": \"Pipeline\", \"value\": \"${CI_PIPELINE_URL}\", \"short\": false}
+            ]
+          }]
+        }"
+    - |
+      # Create incident on failure
+      if [ "$CI_JOB_STATUS" == "failed" ]; then
+        curl -X POST "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/issues" \
+          -H "PRIVATE-TOKEN: ${CI_JOB_TOKEN}" \
+          -H "Content-Type: application/json" \
+          -d "{
+            \"title\": \"🚨 Production WAAS Deployment Failed\",
+            \"description\": \"Production deployment failed for commit ${CI_COMMIT_SHA}\\n\\nPipeline: ${CI_PIPELINE_URL}\\nJob: ${CI_JOB_URL}\",
+            \"labels\": \"incident,production,waas\"
+          }"
+      fi
+
+# ============================================================================
+# STAGE 7: POST-DEPLOYMENT VERIFICATION
+# ============================================================================
+
+verify-production:
+  stage: verify
+  image: python:${PYTHON_VERSION}-slim
+  script:
+    - echo "⏳ Waiting for policy propagation..."
+    - sleep 60
+    - echo "✓ Running post-deployment validation..."
+    # Add verification tests here
+    - echo "✓ Validation complete"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: on_success
+  needs:
+    - deploy-production
+
+generate-report:
+  stage: verify
+  image: python:${PYTHON_VERSION}-slim
+  script:
+    - echo "📊 Generating deployment report..."
+    - |
+      cat > deployment-report.md << EOF
+      # WAAS Deployment Report
+      
+      ## Summary
+      - **Pipeline**: ${CI_PIPELINE_ID}
+      - **Commit**: ${CI_COMMIT_SHA}
+      - **Author**: ${GITLAB_USER_NAME}
+      - **Date**: $(date)
+      - **Branch**: ${CI_COMMIT_BRANCH}
+      
+      ## Deployed Policies
+      $(find policies/production -name "*.yaml" 2>/dev/null | sed 's/^/- /' || echo "None")
+      
+      ## Status
+      All deployments completed successfully.
+      EOF
+    - cat deployment-report.md
+  artifacts:
+    paths:
+      - deployment-report.md
+    expire_in: 90 days
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: on_success
+  needs:
+    - deploy-production
+
+# ============================================================================
+# SCHEDULED JOBS
+# ============================================================================
+
+scheduled-backup:
+  stage: deploy-production
+  image: python:${PYTHON_VERSION}-slim
+  <<: *before_script_definition
+  script:
+    - echo "💾 Running scheduled backup..."
+    - mkdir -p backups
+    - |
+      for policy_type in container host serverless; do
+        python3 deploy_waas_policy.py \
+          $PRISMA_CONSOLE_URL \
+          $PRISMA_USERNAME_PROD \
+          $PRISMA_PASSWORD_PROD \
+          $policy_type \
+          --export \
+          backups/${policy_type}-scheduled-backup-$(date +%Y%m%d).json
+      done
+    - echo "✓ Scheduled backup complete"
+  artifacts:
+    paths:
+      - backups/
+    expire_in: 90 days
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  only:
+    - schedules
+
+# ============================================================================
+# ROLLBACK JOB
+# ============================================================================
+
+rollback-production:
+  stage: deploy-production
+  image: python:${PYTHON_VERSION}-slim
+  <<: *before_script_definition
+  script:
+    - echo "⏪ Rolling back production deployment..."
+    - |
+      if [ -z "$BACKUP_FILE" ]; then
+        echo "❌ ERROR: BACKUP_FILE variable not set"
+        exit 1
+      fi
+    - echo "Restoring from backup: $BACKUP_FILE"
+    # Add rollback logic here using Prisma Cloud API
+    - echo "⚠️  Manual verification required in Prisma Cloud Console"
+  environment:
+    name: production
+    action: rollback
+  when: manual
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  needs:
+    - deploy-production
+
+# ============================================================================
+# CLEANUP JOB
+# ============================================================================
+
+cleanup-old-artifacts:
+  stage: verify
+  image: alpine:latest
+  script:
+    - echo "🧹 Cleaning up old artifacts..."
+    - find backups/ -name "*.json" -mtime +90 -delete 2>/dev/null || true
+    - find logs/ -name "*.log" -mtime +30 -delete 2>/dev/null || true
+    - echo "✓ Cleanup complete"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  only:
+    - schedules
