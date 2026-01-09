@@ -1,0 +1,21 @@
+# Prisma Cloud Toolkit - Security Hardened Dependencies
+# All versions pinned for security and reproducibility
+
+# Core dependencies
+requests==2.31.0
+pyyaml==6.0.1
+cryptography==41.0.7
+
+# Security and validation
+pydantic==2.5.0
+jsonschema==4.20.0
+
+# Logging and monitoring
+structlog==23.2.0
+
+# Retry logic
+tenacity==8.2.3
+
+# Optional: For enhanced security features
+# python-dotenv==1.0.0  # For environment variable management
+# hvac==1.2.0  # For HashiCorp Vault integration (optional)

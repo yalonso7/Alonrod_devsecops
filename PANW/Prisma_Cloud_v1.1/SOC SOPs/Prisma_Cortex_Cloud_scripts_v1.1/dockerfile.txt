@@ -1,0 +1,71 @@
+# Multi-stage Dockerfile for Prisma Cloud WAAS Deployment Tool
+# This creates a minimal, secure container for deploying WAAS policies
+
+# Stage 1: Build stage
+FROM python:3.11-slim as builder
+
+# Set working directory
+WORKDIR /build
+
+# Install build dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# Stage 2: Runtime stage
+FROM python:3.11-slim
+
+# Metadata
+LABEL maintainer="security-team@company.com"
+LABEL description="Prisma Cloud WAAS Policy Deployment Tool"
+LABEL version="1.0.0"
+
+# Create non-root user
+RUN useradd -m -u 1000 -s /bin/bash prisma && \
+    mkdir -p /app /app/policies /app/logs /app/backups && \
+    chown -R prisma:prisma /app
+
+# Set working directory
+WORKDIR /app
+
+# Copy Python dependencies from builder
+COPY --from=builder /root/.local /home/prisma/.local
+
+# Copy application files
+COPY --chown=prisma:prisma deploy_waas_policy.py .
+COPY --chown=prisma:prisma batch_deploy.sh .
+COPY --chown=prisma:prisma sample-waas-policy.yaml ./policies/
+
+# Make scripts executable
+RUN chmod +x batch_deploy.sh deploy_waas_policy.py
+
+# Switch to non-root user
+USER prisma
+
+# Add local Python packages to PATH
+ENV PATH=/home/prisma/.local/bin:$PATH
+ENV PYTHONUNBUFFERED=1
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD python3 -c "import requests, yaml; print('healthy')" || exit 1
+
+# Default command
+ENTRYPOINT ["python3", "deploy_waas_policy.py"]
+CMD ["--help"]
+
+# Usage examples:
+# Build: docker build -t prisma-waas-deployer:latest .
+# Run: docker run -v $(pwd)/policies:/app/policies \
+#      -e PRISMA_CONSOLE_URL=https://console.prismacloud.io \
+#      -e PRISMA_USERNAME=admin \
+#      -e PRISMA_PASSWORD=password \
+#      prisma-waas-deployer:latest \
+#      $PRISMA_CONSOLE_URL $PRISMA_USERNAME $PRISMA_PASSWORD container /app/policies/production.yaml
