@@ -1,0 +1,235 @@
+id: Detect_Lateral_Movement
+version: -1
+name: Detect Lateral Movement (T1021.001, T1021.002, T1078)
+description: Sub-playbook to detect lateral movement activities using Cortex XDR XQL queries. Maps to MITRE ATT&CK T1021.001 (RDP), T1021.002 (SMB), T1078 (Valid Accounts).
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: "0"
+    type: start
+    task:
+      id: "0"
+      name: Start Detection
+      description: Start lateral movement detection
+      type: start
+      iscommand: false
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "1"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 50
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+  "1":
+    id: "1"
+    taskid: "1"
+    type: regular
+    task:
+      id: "1"
+      name: Execute XQL - Suspicious Remote Process Execution
+      description: Execute XQL query to detect suspicious remote process execution
+      type: regular
+      script: ""
+      scriptarguments:
+        query: |-
+          dataset = xdr_data
+          | filter event_type = PROCESS
+          | filter action_process_image_name in ("psexec.exe", "wmic.exe", "sc.exe", "at.exe", "schtasks.exe")
+          | filter action_remote_process_image_name != null
+          | fields event_time_ts, action_process_image_name, action_remote_process_image_name, 
+                  actor_primary_user_sid, actor_process_image_name, action_process_image_path,
+                  action_remote_ip, action_remote_hostname
+          | sort event_time_ts desc
+          | limit 500
+        mitre_technique: "T1078"
+        tactic: "Lateral Movement"
+      brand: "CortexXDR"
+      version: -1
+    nexttasks:
+      '#none#':
+        - "2"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 150
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "2":
+    id: "2"
+    taskid: "2"
+    type: regular
+    task:
+      id: "2"
+      name: Execute XQL - Network Connections to Multiple Hosts
+      description: Execute XQL query to detect network connections to multiple internal hosts
+      type: regular
+      script: ""
+      scriptarguments:
+        query: |-
+          dataset = xdr_data
+          | filter event_type = NETWORK
+          | filter action_local_ip != null
+          | filter action_remote_ip != null
+          | filter action_remote_ip like "10.%"
+          | comp count() by actor_process_image_name, action_local_ip as connection_count
+          | filter connection_count > 10
+          | fields actor_process_image_name, action_local_ip, connection_count, 
+                  action_remote_ip, action_remote_port
+          | sort connection_count desc
+        mitre_technique: "T1078"
+        tactic: "Lateral Movement"
+      brand: "CortexXDR"
+      version: -1
+    nexttasks:
+      '#none#':
+        - "3"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 250
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "3":
+    id: "3"
+    taskid: "3"
+    type: regular
+    task:
+      id: "3"
+      name: Execute XQL - SMB/File Share Access
+      description: Execute XQL query to detect SMB/file share access patterns
+      type: regular
+      script: ""
+      scriptarguments:
+        query: |-
+          dataset = xdr_data
+          | filter event_type = FILE
+          | filter action_file_path like "\\\\%"
+          | filter action_file_path not like "\\\\%\\IPC$%"
+          | comp count() by actor_primary_user_sid, action_file_path as access_count
+          | filter access_count > 5
+          | fields event_time_ts, actor_primary_user_sid, action_file_path, 
+                  action_process_image_name, action_file_operation, access_count
+          | sort event_time_ts desc
+        mitre_technique: "T1021.002"
+        tactic: "Lateral Movement"
+      brand: "CortexXDR"
+      version: -1
+    nexttasks:
+      '#none#':
+        - "4"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 350
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "4":
+    id: "4"
+    taskid: "4"
+    type: regular
+    task:
+      id: "4"
+      name: Execute XQL - RDP/WinRM Connections
+      description: Execute XQL query to detect RDP/WinRM connections
+      type: regular
+      script: ""
+      scriptarguments:
+        query: |-
+          dataset = xdr_data
+          | filter event_type = NETWORK
+          | filter action_remote_port in (3389, 5985, 5986)
+          | filter action_local_ip != null
+          | comp count() by action_remote_ip, action_local_ip as session_count
+          | filter session_count > 3
+          | fields event_time_ts, action_remote_ip, action_local_ip, action_remote_port,
+                  actor_process_image_name, action_network_protocol
+          | sort event_time_ts desc
+        mitre_technique: "T1021.001"
+        tactic: "Lateral Movement"
+      brand: "CortexXDR"
+      version: -1
+    nexttasks:
+      '#none#':
+        - "5"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 450
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "5":
+    id: "5"
+    taskid: "5"
+    type: regular
+    task:
+      id: "5"
+      name: Aggregate Results
+      description: Aggregate and analyze all lateral movement detection results
+      type: regular
+      script: ""
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#': []
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 550
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+inputs: []
+outputs:
+  - contextPath: LateralMovement.Findings
+    description: Detected lateral movement findings
+    type: string
+  - contextPath: LateralMovement.MitreTechniques
+    description: MITRE ATT&CK technique IDs
+    type: string
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 650,
+        "width": 1850,
+        "x": 0,
+        "y": 0
+      }
+    }
+  }
+fromversion: "6.0.0"
+toversion: "6.10.0"

@@ -1,0 +1,200 @@
+id: XQL_Query_Executor
+version: -1
+name: XQL Query Executor
+description: Generic playbook for executing Cortex XDR XQL queries and mapping results to MITRE ATT&CK/ATLAS frameworks. Can be used as a sub-playbook for various investigation scenarios.
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: "0"
+    type: start
+    task:
+      id: "0"
+      name: Start Query Execution
+      description: Start XQL query execution
+      type: start
+      iscommand: false
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "1"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 50
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+  "1":
+    id: "1"
+    taskid: "1"
+    type: regular
+    task:
+      id: "1"
+      name: Execute XQL Query
+      description: Execute the provided XQL query using Cortex XDR integration
+      type: regular
+      script: ""
+      scriptarguments:
+        query: ${inputs.XQLQuery}
+        time_range: ${inputs.TimeRange}
+        limit: ${inputs.ResultLimit}
+      brand: "CortexXDR"
+      version: -1
+    nexttasks:
+      '#none#':
+        - "2"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 150
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "2":
+    id: "2"
+    taskid: "2"
+    type: regular
+    task:
+      id: "2"
+      name: Parse Query Results
+      description: Parse and structure XQL query results
+      type: regular
+      script: ""
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "3"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 250
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "3":
+    id: "3"
+    taskid: "3"
+    type: regular
+    task:
+      id: "3"
+      name: Map to MITRE Framework
+      description: Map query results to MITRE ATT&CK or ATLAS framework based on provided technique ID
+      type: regular
+      script: ""
+      scriptarguments:
+        mitre_technique: ${inputs.MitreTechnique}
+        tactic: ${inputs.Tactic}
+        framework: ${inputs.Framework}
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "4"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 350
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "4":
+    id: "4"
+    taskid: "4"
+    type: regular
+    task:
+      id: "4"
+      name: Store Results
+      description: Store query results in incident context
+      type: regular
+      script: ""
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#': []
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 450
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+inputs:
+  - key: XQLQuery
+    value: {}
+    required: true
+    description: XQL query to execute
+    playbookInputQuery: null
+  - key: TimeRange
+    value: "7 days"
+    required: false
+    description: Time range for query (default: 7 days)
+    playbookInputQuery: null
+  - key: ResultLimit
+    value: "1000"
+    required: false
+    description: Maximum number of results to return
+    playbookInputQuery: null
+  - key: MitreTechnique
+    value: {}
+    required: false
+    description: MITRE ATT&CK or ATLAS technique ID
+    playbookInputQuery: null
+  - key: Tactic
+    value: {}
+    required: false
+    description: MITRE tactic name
+    playbookInputQuery: null
+  - key: Framework
+    value: "ATT&CK"
+    required: false
+    description: Framework type (ATT&CK or ATLAS)
+    playbookInputQuery: null
+outputs:
+  - contextPath: XQLQuery.Results
+    description: XQL query results
+    type: string
+  - contextPath: XQLQuery.MitreTechnique
+    description: MITRE technique ID
+    type: string
+  - contextPath: XQLQuery.Tactic
+    description: MITRE tactic
+    type: string
+  - contextPath: XQLQuery.ResultCount
+    description: Number of results returned
+    type: number
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 550,
+        "width": 1850,
+        "x": 0,
+        "y": 0
+      }
+    }
+  }
+fromversion: "6.0.0"
+toversion: "6.10.0"

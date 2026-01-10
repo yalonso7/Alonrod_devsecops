@@ -1,0 +1,409 @@
+id: AI_MLOps_Investigation_Playbook
+version: -1
+name: AI/MLOps Threat Investigation with MITRE ATLAS Alignment
+description: Comprehensive playbook for investigating AI/MLOps security incidents including prompt injection, tool poisoning, tool confusion, tool shadowing, and MCP ecosystem attacks. Integrates with Cortex XDR XQL queries and maps findings to MITRE ATLAS framework.
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: "0"
+    type: start
+    task:
+      id: "0"
+      name: Start Investigation
+      description: Initiates AI/MLOps threat investigation
+      type: start
+      iscommand: false
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "1"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 50
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+  "1":
+    id: "1"
+    taskid: "1"
+    type: regular
+    task:
+      id: "1"
+      name: Initialize Investigation
+      description: Set up investigation parameters and gather initial context
+      type: regular
+      script: ""
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "2"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 150
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "2":
+    id: "2"
+    taskid: "2"
+    type: playbook
+    task:
+      id: "2"
+      name: Detect Prompt Injection Attacks
+      description: Execute XQL queries to detect prompt injection attacks (ATLAS-LLM-01)
+      type: playbook
+      playbookName: Detect_Prompt_Injection
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "3"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 250
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "3":
+    id: "3"
+    taskid: "3"
+    type: playbook
+    task:
+      id: "3"
+      name: Detect Tool Poisoning
+      description: Execute XQL queries to detect tool poisoning attacks (ATLAS-LLM-02)
+      type: playbook
+      playbookName: Detect_Tool_Poisoning
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "4"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 350
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "4":
+    id: "4"
+    taskid: "4"
+    type: playbook
+    task:
+      id: "4"
+      name: Detect Tool Confusion and Shadowing
+      description: Execute XQL queries to detect tool confusion (ATLAS-LLM-03) and tool shadowing (ATLAS-LLM-04)
+      type: playbook
+      playbookName: Detect_Tool_Confusion_Shadowing
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "5"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 450
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "5":
+    id: "5"
+    taskid: "5"
+    type: playbook
+    task:
+      id: "5"
+      name: Detect MCP Protocol Attacks
+      description: Execute XQL queries to detect MCP protocol manipulation (ATLAS-LLM-05)
+      type: playbook
+      playbookName: Detect_MCP_Attacks
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "6"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 550
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "6":
+    id: "6"
+    taskid: "6"
+    type: playbook
+    task:
+      id: "6"
+      name: Detect ML Training Data Poisoning
+      description: Execute XQL queries to detect training data poisoning (ATLAS-ML-01)
+      type: playbook
+      playbookName: Detect_Data_Poisoning
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "7"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 650
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "7":
+    id: "7"
+    taskid: "7"
+    type: playbook
+    task:
+      id: "7"
+      name: Detect Model Poisoning
+      description: Execute XQL queries to detect model poisoning and backdoors (ATLAS-ML-02)
+      type: playbook
+      playbookName: Detect_Model_Poisoning
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "8"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 750
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "8":
+    id: "8"
+    taskid: "8"
+    type: playbook
+    task:
+      id: "8"
+      name: Detect Adversarial Inputs
+      description: Execute XQL queries to detect adversarial input attacks (ATLAS-ML-03)
+      type: playbook
+      playbookName: Detect_Adversarial_Inputs
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "9"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 850
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "9":
+    id: "9"
+    taskid: "9"
+    type: playbook
+    task:
+      id: "9"
+      name: Detect Model Theft
+      description: Execute XQL queries to detect model theft and exfiltration (ATLAS-ML-04)
+      type: playbook
+      playbookName: Detect_Model_Theft
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "10"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 950
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "10":
+    id: "10"
+    taskid: "10"
+    type: playbook
+    task:
+      id: "10"
+      name: Detect MLOps Infrastructure Attacks
+      description: Execute XQL queries to detect MLOps infrastructure attacks (ATLAS-ML-05)
+      type: playbook
+      playbookName: Detect_MLOps_Infrastructure_Attacks
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "11"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1050
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "11":
+    id: "11"
+    taskid: "11"
+    type: regular
+    task:
+      id: "11"
+      name: Correlate Findings
+      description: Correlate all findings and build attack timeline
+      type: regular
+      script: ""
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "12"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1150
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "12":
+    id: "12"
+    taskid: "12"
+    type: regular
+    task:
+      id: "12"
+      name: Map to MITRE ATLAS
+      description: Map all detected techniques to MITRE ATLAS framework
+      type: regular
+      script: ""
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "13"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1250
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "13":
+    id: "13"
+    taskid: "13"
+    type: regular
+    task:
+      id: "13"
+      name: Generate Investigation Report
+      description: Generate comprehensive investigation report with MITRE ATLAS alignment
+      type: regular
+      script: ""
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "14"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1350
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "14":
+    id: "14"
+    taskid: "14"
+    type: title
+    task:
+      id: "14"
+      name: Investigation Complete
+      description: Investigation completed successfully
+      type: title
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#': []
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1450
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+inputs: []
+outputs: []
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1500,
+        "width": 1850,
+        "x": 0,
+        "y": 0
+      }
+    }
+  }
+fromversion: "6.0.0"
+toversion: "6.10.0"

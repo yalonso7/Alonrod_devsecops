@@ -1,0 +1,202 @@
+id: Detect_Prompt_Injection
+version: -1
+name: Detect Prompt Injection Attacks (ATLAS-LLM-01)
+description: Sub-playbook to detect prompt injection attacks using Cortex XDR XQL queries. Maps to MITRE ATLAS-LLM-01.
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: "0"
+    type: start
+    task:
+      id: "0"
+      name: Start Detection
+      description: Start prompt injection detection
+      type: start
+      iscommand: false
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "1"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 50
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+  "1":
+    id: "1"
+    taskid: "1"
+    type: regular
+    task:
+      id: "1"
+      name: Execute XQL - Suspicious Prompt Patterns
+      description: Execute XQL query to detect suspicious prompt patterns
+      type: regular
+      script: ""
+      scriptarguments:
+        query: |-
+          dataset = xdr_data
+          | filter event_type = NETWORK
+          | filter action_remote_hostname like "%.openai.com"
+          | filter action_remote_hostname like "%.anthropic.com"
+          | filter action_remote_hostname like "%.googleapis.com"
+          | filter action_network_protocol = "HTTPS"
+          | filter action_http_request_body contains "ignore previous"
+          | filter action_http_request_body contains "system:"
+          | filter action_http_request_body contains "#"
+          | fields event_time_ts, action_remote_hostname, action_http_request_body,
+                  actor_process_image_name, actor_primary_user_sid, action_local_ip
+          | sort event_time_ts desc
+          | limit 500
+        mitre_technique: "ATLAS-LLM-01"
+        tactic: "Initial Access / Execution"
+      brand: "CortexXDR"
+      version: -1
+    nexttasks:
+      '#none#':
+        - "2"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 150
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "2":
+    id: "2"
+    taskid: "2"
+    type: regular
+    task:
+      id: "2"
+      name: Execute XQL - Base64 Encoded Prompts
+      description: Execute XQL query to detect base64 encoded prompt injection
+      type: regular
+      script: ""
+      scriptarguments:
+        query: |-
+          dataset = xdr_data
+          | filter event_type = PROCESS
+          | filter action_process_image_name = "python.exe"
+          | filter action_process_command_line regex "(?i)(base64|b64|encode)"
+          | filter action_process_command_line regex "(?i)(openai|anthropic|claude|gpt)"
+          | comp count() by actor_primary_user_sid, action_process_image_name as injection_count
+          | filter injection_count > 3
+          | fields event_time_ts, action_process_image_name, action_process_command_line,
+                  actor_primary_user_sid, injection_count
+          | sort event_time_ts desc
+        mitre_technique: "ATLAS-LLM-01"
+        tactic: "Initial Access / Execution"
+      brand: "CortexXDR"
+      version: -1
+    nexttasks:
+      '#none#':
+        - "3"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 250
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "3":
+    id: "3"
+    taskid: "3"
+    type: regular
+    task:
+      id: "3"
+      name: Execute XQL - Rapid API Calls
+      description: Execute XQL query to detect rapid API calls with suspicious patterns
+      type: regular
+      script: ""
+      scriptarguments:
+        query: |-
+          dataset = xdr_data
+          | filter event_type = NETWORK
+          | filter action_remote_hostname like "%.openai.com"
+          | filter action_remote_port = 443
+          | comp count() by action_local_ip, actor_primary_user_sid as api_call_count
+          | filter api_call_count > 100
+          | comp sum(action_network_bytes_out) by action_local_ip as total_bytes
+          | filter total_bytes > 10485760
+          | fields event_time_ts, action_local_ip, actor_primary_user_sid,
+                  api_call_count, total_bytes, action_remote_hostname
+          | sort api_call_count desc
+        mitre_technique: "ATLAS-LLM-01"
+        tactic: "Initial Access / Execution"
+      brand: "CortexXDR"
+      version: -1
+    nexttasks:
+      '#none#':
+        - "4"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 350
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "4":
+    id: "4"
+    taskid: "4"
+    type: regular
+    task:
+      id: "4"
+      name: Aggregate Results
+      description: Aggregate and analyze all prompt injection detection results
+      type: regular
+      script: ""
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#': []
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 450
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+inputs: []
+outputs:
+  - contextPath: PromptInjection.Findings
+    description: Detected prompt injection findings
+    type: string
+  - contextPath: PromptInjection.MitreTechnique
+    description: MITRE ATLAS technique ID
+    type: string
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 550,
+        "width": 1850,
+        "x": 0,
+        "y": 0
+      }
+    }
+  }
+fromversion: "6.0.0"
+toversion: "6.10.0"

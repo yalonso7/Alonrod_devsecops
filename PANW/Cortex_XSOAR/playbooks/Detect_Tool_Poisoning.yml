@@ -1,0 +1,200 @@
+id: Detect_Tool_Poisoning
+version: -1
+name: Detect Tool Poisoning (ATLAS-LLM-02)
+description: Sub-playbook to detect tool poisoning attacks using Cortex XDR XQL queries. Maps to MITRE ATLAS-LLM-02.
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: "0"
+    type: start
+    task:
+      id: "0"
+      name: Start Detection
+      description: Start tool poisoning detection
+      type: start
+      iscommand: false
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#':
+        - "1"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 50
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+  "1":
+    id: "1"
+    taskid: "1"
+    type: regular
+    task:
+      id: "1"
+      name: Execute XQL - Unauthorized Tool Registration
+      description: Execute XQL query to detect unauthorized tool registration
+      type: regular
+      script: ""
+      scriptarguments:
+        query: |-
+          dataset = xdr_data
+          | filter event_type = FILE
+          | filter action_file_path like "%/tools/%"
+          | filter action_file_path like "%/functions/%"
+          | filter action_file_path like "%.py"
+          | filter action_file_operation = "FILE_WRITE"
+          | filter action_file_path not like "%/venv/%"
+          | filter action_file_path not like "%/node_modules/%"
+          | fields event_time_ts, action_file_path, action_file_operation,
+                  actor_process_image_name, actor_primary_user_sid, action_file_hash
+          | sort event_time_ts desc
+        mitre_technique: "ATLAS-LLM-02"
+        tactic: "Persistence / Defense Evasion"
+      brand: "CortexXDR"
+      version: -1
+    nexttasks:
+      '#none#':
+        - "2"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 150
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "2":
+    id: "2"
+    taskid: "2"
+    type: regular
+    task:
+      id: "2"
+      name: Execute XQL - Tool Function Modification
+      description: Execute XQL query to detect tool function modifications
+      type: regular
+      script: ""
+      scriptarguments:
+        query: |-
+          dataset = xdr_data
+          | filter event_type = FILE
+          | filter action_file_path like "%tool%"
+          | filter action_file_path like "%.py"
+          | filter action_file_operation = "FILE_WRITE"
+          | filter action_file_path like "%def %"
+          | filter action_file_path like "%exec(%"
+          | filter action_file_path like "%eval(%"
+          | filter action_file_path like "%subprocess%"
+          | fields event_time_ts, action_file_path, action_file_operation,
+                  actor_process_image_name, actor_primary_user_sid
+          | sort event_time_ts desc
+        mitre_technique: "ATLAS-LLM-02"
+        tactic: "Persistence / Defense Evasion"
+      brand: "CortexXDR"
+      version: -1
+    nexttasks:
+      '#none#':
+        - "3"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 250
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "3":
+    id: "3"
+    taskid: "3"
+    type: regular
+    task:
+      id: "3"
+      name: Execute XQL - MCP Tool Registry Changes
+      description: Execute XQL query to detect MCP tool registry changes
+      type: regular
+      script: ""
+      scriptarguments:
+        query: |-
+          dataset = xdr_data
+          | filter event_type = PROCESS
+          | filter action_process_image_name = "python.exe"
+          | filter action_process_command_line regex "(?i)(mcp|model.*context.*protocol)"
+          | filter action_process_command_line regex "(?i)(register.*tool|add.*function)"
+          | filter action_process_command_line regex "(?i)(tool.*poison|malicious)"
+          | fields event_time_ts, action_process_image_name, action_process_command_line,
+                  actor_primary_user_sid, action_process_image_path
+          | sort event_time_ts desc
+        mitre_technique: "ATLAS-LLM-02"
+        tactic: "Persistence / Defense Evasion"
+      brand: "CortexXDR"
+      version: -1
+    nexttasks:
+      '#none#':
+        - "4"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 350
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+  "4":
+    id: "4"
+    taskid: "4"
+    type: regular
+    task:
+      id: "4"
+      name: Aggregate Results
+      description: Aggregate and analyze all tool poisoning detection results
+      type: regular
+      script: ""
+      brand: ""
+      version: -1
+    nexttasks:
+      '#none#': []
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 450
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    fieldMapping: []
+inputs: []
+outputs:
+  - contextPath: ToolPoisoning.Findings
+    description: Detected tool poisoning findings
+    type: string
+  - contextPath: ToolPoisoning.MitreTechnique
+    description: MITRE ATLAS technique ID
+    type: string
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 550,
+        "width": 1850,
+        "x": 0,
+        "y": 0
+      }
+    }
+  }
+fromversion: "6.0.0"
+toversion: "6.10.0"
