@@ -1,0 +1,229 @@
+# SOC Integrations Configuration File
+# This file contains configuration for all SOC integrations
+# Use environment variables for sensitive values
+
+integrations:
+  # Palo Alto Networks Products
+  cortex_xdr:
+    enabled: true
+    api_key: "${XDR_API_KEY}"
+    api_key_id: "${XDR_API_KEY_ID}"
+    base_url: "https://api.xdr.us.paloaltonetworks.com"
+    verify_ssl: true
+    timeout: 30
+  
+  xsoar:
+    enabled: true
+    base_url: "${XSOAR_URL}"
+    api_key: "${XSOAR_API_KEY}"
+    verify_ssl: true
+    timeout: 30
+  
+  prisma_cloud:
+    enabled: true
+    api_url: "${PRISMA_API_URL}"
+    access_key: "${PRISMA_ACCESS_KEY}"
+    secret_key: "${PRISMA_SECRET_KEY}"
+    verify_ssl: true
+  
+  # Security Scanning Tools
+  sonarqube:
+    enabled: true
+    base_url: "${SONARQUBE_URL}"
+    token: "${SONARQUBE_TOKEN}"
+    default_project: "${SONARQUBE_PROJECT}"
+  
+  snyk:
+    enabled: true
+    api_token: "${SNYK_API_TOKEN}"
+    org_id: "${SNYK_ORG_ID}"
+    base_url: "https://api.snyk.io/v1"
+  
+  # SIEM and Logging
+  splunk:
+    enabled: true
+    hec_url: "${SPLUNK_HEC_URL}"
+    hec_token: "${SPLUNK_HEC_TOKEN}"
+    index: "security"
+    sourcetype_prefix: "soc"
+    search_url: "${SPLUNK_SEARCH_URL}"
+    search_username: "${SPLUNK_USERNAME}"
+    search_password: "${SPLUNK_PASSWORD}"
+  
+  elasticsearch:
+    enabled: false
+    endpoint: "${ELASTIC_ENDPOINT}"
+    username: "${ELASTIC_USERNAME}"
+    password: "${ELASTIC_PASSWORD}"
+    index_pattern: "security-*"
+  
+  qradar:
+    enabled: false
+    endpoint: "${QRADAR_ENDPOINT}"
+    token: "${QRADAR_TOKEN}"
+  
+  # ITSM and Ticketing
+  servicenow:
+    enabled: true
+    instance_url: "${SNOW_INSTANCE_URL}"
+    username: "${SNOW_USERNAME}"
+    password: "${SNOW_PASSWORD}"
+    default_assignment_group: "Security Operations"
+    default_category: "Security"
+  
+  jira:
+    enabled: true
+    base_url: "${JIRA_URL}"
+    username: "${JIRA_USERNAME}"
+    api_token: "${JIRA_API_TOKEN}"
+    default_project: "SEC"
+    default_issue_type: "Security Issue"
+  
+  # Communication
+  slack:
+    enabled: true
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    bot_token: "${SLACK_BOT_TOKEN}"
+    default_channel: "#security-alerts"
+    critical_channel: "#security-critical"
+  
+  microsoft_teams:
+    enabled: false
+    webhook_url: "${TEAMS_WEBHOOK_URL}"
+    default_channel: "Security Alerts"
+  
+  pagerduty:
+    enabled: true
+    api_key: "${PAGERDUTY_API_KEY}"
+    service_id: "${PAGERDUTY_SERVICE_ID}"
+    escalation_policy_id: "${PAGERDUTY_ESCALATION_POLICY_ID}"
+  
+  # Additional Integrations
+  salesforce:
+    enabled: false
+    instance_url: "${SALESFORCE_INSTANCE_URL}"
+    access_token: "${SALESFORCE_ACCESS_TOKEN}"
+    default_case_origin: "API"
+  
+  github:
+    enabled: false
+    token: "${GITHUB_TOKEN}"
+    default_owner: "${GITHUB_OWNER}"
+    default_repo: "${GITHUB_REPO}"
+  
+  azure_devops:
+    enabled: false
+    organization: "${AZURE_DEVOPS_ORG}"
+    project: "${AZURE_DEVOPS_PROJECT}"
+    personal_access_token: "${AZURE_DEVOPS_PAT}"
+  
+  # Identity and Access Management
+  okta:
+    enabled: true
+    base_url: "${OKTA_BASE_URL}"
+    api_token: "${OKTA_API_TOKEN}"
+    webhook_secret: "${OKTA_WEBHOOK_SECRET}"
+    auto_create_incidents: true
+    severity_threshold: "medium"
+  
+  sailpoint:
+    enabled: true
+    tenant: "${SAILPOINT_TENANT}"
+    client_id: "${SAILPOINT_CLIENT_ID}"
+    client_secret: "${SAILPOINT_CLIENT_SECRET}"
+    auto_create_incidents: true
+    severity_threshold: "medium"
+  
+  pingone:
+    enabled: true
+    environment_id: "${PINGONE_ENVIRONMENT_ID}"
+    client_id: "${PINGONE_CLIENT_ID}"
+    client_secret: "${PINGONE_CLIENT_SECRET}"
+    region: "${PINGONE_REGION}"
+    auto_create_incidents: true
+    severity_threshold: "medium"
+
+# Integration Rules
+integration_rules:
+  # Automatic incident creation rules
+  auto_create_incidents:
+    enabled: true
+    sources:
+      - cortex_xdr
+      - prisma_cloud
+    severity_threshold: "high"  # Only create for high/critical
+    destinations:
+      - xsoar
+      - servicenow
+  
+  # Notification rules
+  notifications:
+    critical:
+      channels:
+        - slack
+        - pagerduty
+      immediate: true
+    high:
+      channels:
+        - slack
+      immediate: true
+    medium:
+      channels:
+        - slack
+      immediate: false
+      batch_interval: 300  # 5 minutes
+  
+  # Logging rules
+  logging:
+    all_events:
+      destination: splunk
+      index: "security"
+    critical_events:
+      destinations:
+        - splunk
+        - elasticsearch
+      retention_days: 365
+
+# Correlation Rules
+correlation:
+  enabled: true
+  rules:
+    - name: "XDR + Prisma Cloud Correlation"
+      sources:
+        - cortex_xdr
+        - prisma_cloud
+      condition: "same_resource_id"
+      action: "create_correlation_incident"
+      destination: xsoar
+    
+    - name: "SonarQube + Snyk Correlation"
+      sources:
+        - sonarqube
+        - snyk
+      condition: "same_vulnerability"
+      action: "merge_issues"
+      destination: jira
+    
+    - name: "Okta + XDR Correlation"
+      sources:
+        - okta
+        - cortex_xdr
+      condition: "same_user_id"
+      action: "create_correlation_incident"
+      destination: xsoar
+    
+    - name: "SailPoint + XDR Correlation"
+      sources:
+        - sailpoint
+        - cortex_xdr
+      condition: "same_identity_id"
+      action: "create_correlation_incident"
+      destination: xsoar
+    
+    - name: "PingOne + XDR Correlation"
+      sources:
+        - pingone
+        - cortex_xdr
+      condition: "same_user_id"
+      action: "create_correlation_incident"
+      destination: xsoar
