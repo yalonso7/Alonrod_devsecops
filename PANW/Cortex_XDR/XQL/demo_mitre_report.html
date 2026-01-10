@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITRE ATT&CK Incident Response Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .section h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: white;
+            border: none;
+        }
+        
+        .stat-card p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .tactic-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin: 5px;
+            background-color: #667eea;
+            color: white;
+        }
+        
+        .technique-card {
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        
+        .technique-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .technique-id {
+            font-family: 'Courier New', monospace;
+            background-color: #667eea;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 3px solid #667eea;
+            background-color: #f9f9f9;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 20px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: #667eea;
+        }
+        
+        .severity-critical {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .severity-high {
+            color: #fd7e14;
+            font-weight: bold;
+        }
+        
+        .severity-medium {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        
+        .severity-low {
+            color: #28a745;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            margin-top: 40px;
+        }
+        
+        .code-block {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            font-size: 0.85em;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ MITRE ATT&CK Incident Response Report</h1>
+            <p>Generated: 2026-01-09 22:35:24</p>
+        </div>
+        
+        <div class="section">
+            <h2>Executive Summary</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>15</h3>
+                    <p>Total Events</p>
+                </div>
+                <div class="stat-card">
+                    <h3>9</h3>
+                    <p>MITRE Techniques</p>
+                </div>
+                <div class="stat-card">
+                    <h3>5</h3>
+                    <p>Attack Tactics</p>
+                </div>
+                <div class="stat-card">
+                    <h3>4</h3>
+                    <p>Affected Hosts</p>
+                </div>
+            </div>
+            
+            <h3>Timeline</h3>
+            <p><strong>Start:</strong> 2023-12-31T20:00:00</p>
+            <p><strong>End:</strong> 2023-12-31T20:14:00</p>
+        </div>
+        
+        <div class="section">
+            <h2>MITRE ATT&CK Techniques Detected</h2>
+            
+            <div class="technique-card">
+                <h4>
+                    <span class="technique-id">T1059.001</span> - Command and Scripting Interpreter: PowerShell
+                </h4>
+                <p><strong>Tactic:</strong> <span class="tactic-badge">Execution</span></p>
+                <p><strong>Description:</strong> Adversaries may abuse PowerShell to execute commands.</p>
+                <p><strong>Occurrences:</strong> 1 event(s)</p>
+            </div>
+            
+            <div class="technique-card">
+                <h4>
+                    <span class="technique-id">T1021.001</span> - Remote Desktop Protocol
+                </h4>
+                <p><strong>Tactic:</strong> <span class="tactic-badge">Lateral Movement</span></p>
+                <p><strong>Description:</strong> Adversaries may use Remote Desktop Protocol (RDP) to move laterally.</p>
+                <p><strong>Occurrences:</strong> 1 event(s)</p>
+            </div>
+            
+            <div class="technique-card">
+                <h4>
+                    <span class="technique-id">T1003.001</span> - LSASS Memory
+                </h4>
+                <p><strong>Tactic:</strong> <span class="tactic-badge">Credential Access</span></p>
+                <p><strong>Description:</strong> Adversaries may attempt to access credential material stored in LSASS memory.</p>
+                <p><strong>Occurrences:</strong> 1 event(s)</p>
+            </div>
+            
+            <div class="technique-card">
+                <h4>
+                    <span class="technique-id">T1021.002</span> - SMB/Windows Admin Shares
+                </h4>
+                <p><strong>Tactic:</strong> <span class="tactic-badge">Lateral Movement</span></p>
+                <p><strong>Description:</strong> Adversaries may use SMB to move laterally.</p>
+                <p><strong>Occurrences:</strong> 1 event(s)</p>
+            </div>
+            
+            <div class="technique-card">
+                <h4>
+                    <span class="technique-id">T1548.002</span> - Bypass User Account Control
+                </h4>
+                <p><strong>Tactic:</strong> <span class="tactic-badge">Privilege Escalation</span></p>
+                <p><strong>Description:</strong> Adversaries may bypass UAC mechanisms to elevate privileges.</p>
+                <p><strong>Occurrences:</strong> 1 event(s)</p>
+            </div>
+            
+            <div class="technique-card">
+                <h4>
+                    <span class="technique-id">T1055</span> - Process Injection
+                </h4>
+                <p><strong>Tactic:</strong> <span class="tactic-badge">Defense Evasion</span></p>
+                <p><strong>Description:</strong> Adversaries may inject code into processes to evade defenses.</p>
+                <p><strong>Occurrences:</strong> 1 event(s)</p>
+            </div>
+            
+            <div class="technique-card">
+                <h4>
+                    <span class="technique-id">T1555.003</span> - Credentials from Web Browsers
+                </h4>
+                <p><strong>Tactic:</strong> <span class="tactic-badge">Credential Access</span></p>
+                <p><strong>Description:</strong> Adversaries may acquire credentials from web browsers.</p>
+                <p><strong>Occurrences:</strong> 1 event(s)</p>
+            </div>
+            
+            <div class="technique-card">
+                <h4>
+                    <span class="technique-id">T1053.005</span> - Scheduled Task/Job: Scheduled Task
+                </h4>
+                <p><strong>Tactic:</strong> <span class="tactic-badge">Privilege Escalation</span></p>
+                <p><strong>Description:</strong> Adversaries may abuse task scheduling functionality to escalate privileges.</p>
+                <p><strong>Occurrences:</strong> 1 event(s)</p>
+            </div>
+            
+            <div class="technique-card">
+                <h4>
+                    <span class="technique-id">T1543.003</span> - Create or Modify System Process: Windows Service
+                </h4>
+                <p><strong>Tactic:</strong> <span class="tactic-badge">Privilege Escalation</span></p>
+                <p><strong>Description:</strong> Adversaries may create or modify Windows services to escalate privileges.</p>
+                <p><strong>Occurrences:</strong> 1 event(s)</p>
+            </div>
+            
+        </div>
+        
+        <div class="section">
+            <h2>Tactics Summary</h2>
+            
+            <div style="margin-bottom: 10px;">
+                <strong>Execution</strong>: 1 event(s)
+                <div style="width: 100%; background-color: #e9ecef; border-radius: 4px; height: 20px; margin-top: 5px;">
+                    <div style="background-color: #667eea; height: 100%; width: 7.0%; border-radius: 4px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <strong>Lateral Movement</strong>: 2 event(s)
+                <div style="width: 100%; background-color: #e9ecef; border-radius: 4px; height: 20px; margin-top: 5px;">
+                    <div style="background-color: #667eea; height: 100%; width: 13.0%; border-radius: 4px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <strong>Credential Access</strong>: 2 event(s)
+                <div style="width: 100%; background-color: #e9ecef; border-radius: 4px; height: 20px; margin-top: 5px;">
+                    <div style="background-color: #667eea; height: 100%; width: 13.0%; border-radius: 4px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <strong>Privilege Escalation</strong>: 3 event(s)
+                <div style="width: 100%; background-color: #e9ecef; border-radius: 4px; height: 20px; margin-top: 5px;">
+                    <div style="background-color: #667eea; height: 100%; width: 20.0%; border-radius: 4px;"></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <strong>Defense Evasion</strong>: 1 event(s)
+                <div style="width: 100%; background-color: #e9ecef; border-radius: 4px; height: 20px; margin-top: 5px;">
+                    <div style="background-color: #667eea; height: 100%; width: 7.0%; border-radius: 4px;"></div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="section">
+            <h2>Top Processes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Process Name</th>
+                        <th>Occurrences</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td><code>powershell.exe</code></td>
+                        <td>1</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><code>lsass.exe</code></td>
+                        <td>1</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><code>eventvwr.exe</code></td>
+                        <td>1</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><code>rundll32.exe</code></td>
+                        <td>1</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><code>schtasks.exe</code></td>
+                        <td>1</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><code>sc.exe</code></td>
+                        <td>1</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><code>wevtutil.exe</code></td>
+                        <td>1</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>Top External Hosts</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Host IP</th>
+                        <th>Connections</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td><code>192.0.2.100</code></td>
+                        <td>1</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><code>203.0.113.50</code></td>
+                        <td>1</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><code>198.51.100.50</code></td>
+                        <td>1</td>
+                    </tr>
+                    
+                    <tr>
+                        <td><code>172.217.164.110</code></td>
+                        <td>1</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>Event Timeline</h2>
+            <div class="timeline">
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:00:00</strong> - PROCESS
+                    
+                    <br><span class="tag">Process: powershell.exe</span>
+                    
+                    
+                    <br><span class="technique-id">T1059.001</span>
+                    
+                    
+                    <div class="code-block">powershell -enc SQBuAHYAbwBrAGUALQBXAGUAYgBSAGUAcQB1AGUAcwB0AA==</div>
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:01:00</strong> - NETWORK
+                    
+                    
+                    <br><span class="technique-id">T1021.001</span>
+                    
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:02:00</strong> - PROCESS
+                    
+                    <br><span class="tag">Process: lsass.exe</span>
+                    
+                    
+                    <br><span class="technique-id">T1003.001</span>
+                    
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:03:00</strong> - FILE
+                    
+                    
+                    <br><span class="technique-id">T1021.002</span>
+                    
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:04:00</strong> - NETWORK
+                    
+                    
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:05:00</strong> - REGISTRY
+                    
+                    
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:06:00</strong> - PROCESS
+                    
+                    <br><span class="tag">Process: eventvwr.exe</span>
+                    
+                    
+                    <br><span class="technique-id">T1548.002</span>
+                    
+                    
+                    <div class="code-block">eventvwr.exe</div>
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:07:00</strong> - PROCESS
+                    
+                    <br><span class="tag">Process: rundll32.exe</span>
+                    
+                    
+                    <br><span class="technique-id">T1055</span>
+                    
+                    
+                    <div class="code-block">rundll32.exe C:\Temp\malicious.dll,EntryPoint</div>
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:08:00</strong> - FILE
+                    
+                    
+                    <br><span class="technique-id">T1555.003</span>
+                    
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:09:00</strong> - NETWORK
+                    
+                    
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:10:00</strong> - PROCESS
+                    
+                    <br><span class="tag">Process: schtasks.exe</span>
+                    
+                    
+                    <br><span class="technique-id">T1053.005</span>
+                    
+                    
+                    <div class="code-block">schtasks.exe /create /tn "UpdateTask" /tr "C:\Temp\malware.exe" /sc onlogon /ru SYSTEM</div>
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:11:00</strong> - PROCESS
+                    
+                    <br><span class="tag">Process: sc.exe</span>
+                    
+                    
+                    <br><span class="technique-id">T1543.003</span>
+                    
+                    
+                    <div class="code-block">sc.exe create MalwareService binPath= "C:\Temp\malware.exe"</div>
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:12:00</strong> - PROCESS
+                    
+                    <br><span class="tag">Process: wevtutil.exe</span>
+                    
+                    
+                    
+                    <div class="code-block">wevtutil.exe cl System</div>
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:13:00</strong> - NETWORK
+                    
+                    
+                    
+                </div>
+                
+                <div class="timeline-item">
+                    <strong>2023-12-31T20:14:00</strong> - REGISTRY
+                    
+                    
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+        
+        <div class="section">
+            <h2>Affected Systems</h2>
+            <h3>Hosts</h3>
+            <ul>
+                
+                <li><code>192.0.2.100</code></li>
+                
+                <li><code>203.0.113.50</code></li>
+                
+                <li><code>172.217.164.110</code></li>
+                
+                <li><code>198.51.100.50</code></li>
+                
+            </ul>
+            
+            <h3>Users</h3>
+            <ul>
+                
+                <li><code>S-1-5-21-1234567890-123456789-123456789-1002</code></li>
+                
+                <li><code>S-1-5-21-1234567890-123456789-123456789-1001</code></li>
+                
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>Report generated by Cortex XDR XQL MITRE ATT&CK Reporter v1.0</p>
+            <p>For questions or issues, contact Security Operations</p>
+        </div>
+    </div>
+</body>
+</html>
