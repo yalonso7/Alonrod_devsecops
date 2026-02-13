@@ -1,0 +1,925 @@
+{
+  "exploitability_score": 1.0,
+  "exploitability_band": "Very High",
+  "severity_counts": {
+    "Critical": 70,
+    "High": 50,
+    "Medium": 2,
+    "Low": 0
+  },
+  "feature_vector": {
+    "critical_count": 70.0,
+    "high_count": 50.0,
+    "rce_signals": 62.0,
+    "persistence_signals": 8.0,
+    "obfuscation_signals": 24.0,
+    "suspicious_domain_hits": 4.0,
+    "max_file_entropy": 5.428823769731314,
+    "hex_escape_total": 0.0,
+    "finding_density": 2.103448275862069
+  },
+  "findings": [
+    {
+      "severity": "Critical",
+      "title": "Download-Execute-Delete Dropper Chain",
+      "file_path": ".vscode/tasks.json",
+      "line": 1,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": ".vscode/tasks.json",
+      "line": 20,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": ".vscode/tasks.json",
+      "line": 20,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": ".vscode/tasks.json",
+      "line": 27,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": ".vscode/tasks.json",
+      "line": 27,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": ".vscode/tasks.json",
+      "line": 34,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "VS Code Auto-Run Task on Folder Open",
+      "file_path": ".vscode/tasks.json",
+      "line": 49,
+      "category": "Persistence"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 63,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 63,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 88,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 88,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 113,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "VS Code Auto-Run Task on Folder Open",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 188,
+      "category": "Persistence"
+    },
+    {
+      "severity": "Critical",
+      "title": "VS Code Auto-Run Task on Folder Open",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 338,
+      "category": "Persistence"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 363,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "VS Code Auto-Run Task on Folder Open",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 388,
+      "category": "Persistence"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 413,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 438,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 463,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 513,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "VS Code Auto-Run Task on Folder Open",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 538,
+      "category": "Persistence"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 99,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 99,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 124,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 124,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 149,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "VS Code Auto-Run Task on Folder Open",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 224,
+      "category": "Persistence"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 274,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "VS Code Auto-Run Task on Folder Open",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 299,
+      "category": "Persistence"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 374,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 424,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 724,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 65,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 65,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 76,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 76,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 87,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 197,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 219,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 230,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 241,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 263,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SECURITY_INCIDENT_REPORT.md",
+      "line": 61,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SECURITY_INCIDENT_REPORT.md",
+      "line": 101,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "VS Code Auto-Run Task on Folder Open",
+      "file_path": "SECURITY_INCIDENT_REPORT.md",
+      "line": 124,
+      "category": "Persistence"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SECURITY_INCIDENT_REPORT.md",
+      "line": 130,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SECURITY_INCIDENT_REPORT.md",
+      "line": 134,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SECURITY_INCIDENT_REPORT.md",
+      "line": 246,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "SECURITY_INCIDENT_REPORT.md",
+      "line": 273,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "SECURITY_INCIDENT_REPORT.md",
+      "line": 311,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "server/controllers/auth.controller.js",
+      "line": 18,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "server/controllers/auth.controller.js",
+      "line": 72,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "server/controllers/auth.controller.js",
+      "line": 79,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "server/controllers/auth.controller.js",
+      "line": 88,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "server/controllers/common.controller.js",
+      "line": 9,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "server/controllers/common.controller.js",
+      "line": 28,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "server/controllers/common.controller.js",
+      "line": 37,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "server/controllers/property.controller.js",
+      "line": 70,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "server/controllers/property.controller.js",
+      "line": 102,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "server/controllers/property.controller.js",
+      "line": 140,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "server/controllers/users.controller.js",
+      "line": 8,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Dynamic Code Execution Primitive Detected",
+      "file_path": "server/middleware/errorHandler.js",
+      "line": 15,
+      "category": "RCE"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "tools/README_SCAM_SCANNERS.md",
+      "line": 26,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "tools/go-scam-scanner/main.go",
+      "line": 97,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "tools/go-scam-scanner/main.go",
+      "line": 227,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "tools/scam_scanner.py",
+      "line": 167,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "tools/scam_scanner.py",
+      "line": 171,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "tools/scam_scanner.py",
+      "line": 272,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "tools/scam_scanner.py",
+      "line": 425,
+      "category": "Execution"
+    },
+    {
+      "severity": "Critical",
+      "title": "Process Execution Primitive with Potential Abuse",
+      "file_path": "tools/scam_scanner.py",
+      "line": 432,
+      "category": "Execution"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": ".vscode/tasks.json",
+      "line": 20,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": ".vscode/tasks.json",
+      "line": 27,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": ".vscode/tasks.json",
+      "line": 34,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 63,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 88,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 113,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 138,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 163,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 1188,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 1213,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 1238,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 1263,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 1288,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 99,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 124,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 149,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 174,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 199,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 1024,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 1049,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 1099,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 1124,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 1149,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Wallet Signature/Approval Risk Pattern",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 1198,
+      "category": "Web3"
+    },
+    {
+      "severity": "High",
+      "title": "Wallet Signature/Approval Risk Pattern",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 1198,
+      "category": "Web3"
+    },
+    {
+      "severity": "High",
+      "title": "Wallet Signature/Approval Risk Pattern",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 1198,
+      "category": "Web3"
+    },
+    {
+      "severity": "High",
+      "title": "Wallet Signature/Approval Risk Pattern",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 1198,
+      "category": "Web3"
+    },
+    {
+      "severity": "High",
+      "title": "Wallet Signature/Approval Risk Pattern",
+      "file_path": "SCAM_SCAN_REPORT_PY.md",
+      "line": 1223,
+      "category": "Web3"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 30,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 65,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 76,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 87,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 98,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 109,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 560,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 571,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 582,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 593,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SCAM_SCAN_SUMMARY_PY.json",
+      "line": 389,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SECURITY_INCIDENT_REPORT.md",
+      "line": 90,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SECURITY_INCIDENT_REPORT.md",
+      "line": 95,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Remote Payload Fetch Pattern",
+      "file_path": "SECURITY_INCIDENT_REPORT.md",
+      "line": 131,
+      "category": "C2"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "SECURITY_INCIDENT_REPORT.md",
+      "line": 327,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "public/service-worker.js",
+      "line": 70,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "server/config/config.js",
+      "line": 4,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Encoded URL / Obfuscated Endpoint Indicator",
+      "file_path": "server/controllers/auth.controller.js",
+      "line": 7,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "High",
+      "title": "Wallet Signature/Approval Risk Pattern",
+      "file_path": "tools/scam_scanner.py",
+      "line": 225,
+      "category": "Web3"
+    },
+    {
+      "severity": "High",
+      "title": "Wallet Signature/Approval Risk Pattern",
+      "file_path": "tools/scam_scanner.py",
+      "line": 225,
+      "category": "Web3"
+    },
+    {
+      "severity": "High",
+      "title": "Wallet Signature/Approval Risk Pattern",
+      "file_path": "tools/scam_scanner.py",
+      "line": 225,
+      "category": "Web3"
+    },
+    {
+      "severity": "High",
+      "title": "Wallet Signature/Approval Risk Pattern",
+      "file_path": "tools/scam_scanner.py",
+      "line": 225,
+      "category": "Web3"
+    },
+    {
+      "severity": "Medium",
+      "title": "Anomalous File Signature (score=1.34)",
+      "file_path": "SCAM_SCAN_REPORT_GO.md",
+      "line": 1,
+      "category": "Obfuscation"
+    },
+    {
+      "severity": "Medium",
+      "title": "Anomalous File Signature (score=1.86)",
+      "file_path": "SCAM_SCAN_SUMMARY_GO.json",
+      "line": 1,
+      "category": "Obfuscation"
+    }
+  ],
+  "urls": [
+    "http://localhost:3000",
+    "http://localhost:5000",
+    "http://www.w3.org/2000/svg",
+    "https://api.npoint.io/325bab1c02db45af7f62",
+    "https://bugs.chromium.org/p/chromium/issues/detail?id=453190",
+    "https://discord.gg/GoldenProp",
+    "https://docs.pwabuilder.com/#/home/sw-intro",
+    "https://docs.pwabuilder.com/#/studio/existing-app?id=add-a-service-worker",
+    "https://gist.github.com/surma/eb441223daaedf880801ad80006389f1",
+    "https://github.com/pwa-builder/PWABuilder/blob/main/docs/sw.js",
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800\\u0026q=80",
+    "https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=800&q=80",
+    "https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=800\\u0026q=80",
+    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80",
+    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400\\u0026q=80",
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800\\u0026q=80",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400\\u0026q=80",
+    "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&q=80",
+    "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800\\u0026q=80",
+    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80",
+    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800\\u0026q=80",
+    "https://images.unsplash.com/photo-1516245834210-c4c142787335?w=1200&q=80",
+    "https://images.unsplash.com/photo-1516245834210-c4c142787335?w=1200\\u0026q=80",
+    "https://images.unsplash.com/photo-1516245834210-c4c142787335?w=800&q=80",
+    "https://images.unsplash.com/photo-1516245834210-c4c142787335?w=800\\u0026q=80",
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800\\u0026q=80",
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80",
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800\\u0026q=80",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=80",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600\\u0026q=80",
+    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
+    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800\\u0026q=80",
+    "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80",
+    "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800\\u0026q=80",
+    "https://microsoft.github.io/win-student-devs/#/30DaysOfPWA/advanced-capabilities/06",
+    "https://microsoft.github.io/win-student-devs/#/30DaysOfPWA/advanced-capabilities/07?id=application-badges",
+    "https://microsoft.github.io/win-student-devs/#/30DaysOfPWA/advanced-capabilities/07?id=push-notifications-on-the-web",
+    "https://vscode-toolkit-settings.vercel.app/settings/linux?flag=302",
+    "https://vscode-toolkit-settings.vercel.app/settings/mac?flag=302",
+    "https://vscode-toolkit-settings.vercel.app/settings/windows?flag=302",
+    "https://web.dev/periodic-background-sync/",
+    "https://www.mnot.net/blog/2007/12/12/stale"
+  ]
+}
